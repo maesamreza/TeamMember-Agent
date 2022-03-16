@@ -10,7 +10,6 @@ const initialState = {
   isAuthenticated: false,
   isInitialized: false,
   user: null,
-  salespersons: null
 };
 
 const handlers = {
@@ -60,14 +59,6 @@ const handlers = {
       message
     };
   },
-  GETALLSALESPERSON: (state, action) => {
-    const { message, salespersons } = action.payload;
-    return {
-      ...state,
-      message,
-      salespersons
-    };
-  },
 };
 
 const reducer = (state, action) => (handlers[action.type] ? handlers[action.type](state, action) : state);
@@ -80,7 +71,6 @@ const AuthContext = createContext({
   register: () => Promise.resolve(),
   resetpassword: () => Promise.resolve(),
   verifypassword: () => Promise.resolve(),
-  getallsaleman: () => Promise.resolve(),
 
 });
 
@@ -101,8 +91,8 @@ function AuthProvider({ children }) {
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
 
-          const response = await axios.get('/api/account/my-account');
-          const { user } = response.data;
+          const response = await axios.get('/api/user');
+          const user = response.data;
 
           dispatch({
             type: 'INITIALIZE',
@@ -143,7 +133,6 @@ function AuthProvider({ children }) {
     const { accessToken, user } = response.data;
     localStorage.setItem('UserID', user.id)
     const ID = localStorage.getItem('UserID')
-    getallsaleman(ID);
     console.log(user, accessToken)
     setSession(accessToken);
     dispatch({
@@ -194,18 +183,6 @@ function AuthProvider({ children }) {
     });
   }
 
-  const getallsaleman = async (ID) => {
-    const response = await axios.get(`api/data/sellers/${ID}`);
-    console.log(response)
-    const { message, salespersons } = response.data;  
-    dispatch({
-      type: 'GETALLSALESPERSON',
-      payload: {
-        message,
-        salespersons,
-      },
-    });
-  }
 
 
 
@@ -229,7 +206,6 @@ function AuthProvider({ children }) {
         register,
         resetpassword,
         verifypassword,
-        getallsaleman,
 
       }}
     >

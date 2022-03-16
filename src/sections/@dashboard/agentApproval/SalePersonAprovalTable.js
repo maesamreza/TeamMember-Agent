@@ -56,14 +56,14 @@ export default function SalesPersonApproval() {
     const navigate = useNavigate();
     const { themeStretch } = useSettings();
     const { enqueueSnackbar } = useSnackbar();
-    const { getallsaleman, salespersons } = useAuth();
+    const { getallsaleman, salePersons } = useAuth();
     const userID = localStorage.getItem('UserID')
 
     useEffect(() => {
-        getallsaleman(userID);
+        // getallsaleman(userID);
         // try {
         //     getallsaleman(userID);
-        //     // setData(salespersons)
+        //     // setData(salePersons)
         // } catch (error) {
         //     console.log(error)
         // }
@@ -73,8 +73,7 @@ export default function SalesPersonApproval() {
         const ID = e;
         const response = await axios.get(`api/approve/seller/${ID}/${userID}`);
         const { message } = response.data;
-        getallsaleman(userID);
-        // setData(salespersons)
+        // setData(salePersons)
         enqueueSnackbar(message);
     }
     const SaleDeactivaID = async (e) => {
@@ -83,8 +82,7 @@ export default function SalesPersonApproval() {
         const { message } = response.data;
         // console.log(response.data)
         enqueueSnackbar(message);
-        // setData(salespersons)
-        getallsaleman(userID);
+        // setData(salePersons)
     }
     // const AgentViewID = async (ID) => {
     //     localStorage.setItem('AgentViewID', ID)
@@ -197,33 +195,16 @@ export default function SalesPersonApproval() {
     };
 
     // const [data, setData] = useState([]);
-    const data = salespersons;
+    const data = salePersons;
     return (
         <Page title="SalePerson Appoval">
             <Container maxWidth={themeStretch ? false : 'lg'}>
                 <Grid>
-                    <HeaderBreadcrumbs
-                        heading="SalePerson Approval"
-                        links={[
-                            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-                            { name: 'SalesPerson Approval' },
-                        ]}
-                        action={
-                            <Button
-                                variant="contained"
-                                component={RouterLink}
-                                to={PATH_DASHBOARD.general.addNewSale}
-                                startIcon={<Iconify icon={'eva:plus-fill'} />}
-                            >
-                                New SalePerson
-                            </Button>
-                        }
-                    />
-
+                  
                     <Card>
                         {data !== null ?
                             <MUIDataTable
-                                title={"SalesPersons"}
+                                title={"salePersons"}
                                 data={data}
                                 columns={columns}
                                 options={options}

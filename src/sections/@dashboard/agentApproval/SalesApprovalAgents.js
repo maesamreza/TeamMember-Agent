@@ -55,22 +55,26 @@ export default function SalesApproval() {
     const theme = useTheme();
     const { themeStretch } = useSettings();
     const { enqueueSnackbar } = useSnackbar();
-    const { getallsaleman, salespersons } = useAuth();
     const ID = localStorage.getItem('AgentViewID')
     useEffect(() => {
         try {
-            getallsaleman(ID);
-            setData(salespersons)
+            GetAllSaleMan();
         } catch (error) {
             console.log(error)
         }
     }, [])
+    const GetAllSaleMan = async () => {
+        const response = await axios.get(`api/data/sellers/${ID}`);
+        const { message, salePersons } = response.data;
+        setData(salePersons)
+        enqueueSnackbar(message);
 
+    }
     const SalePersonID = async (e) => {
         const IDs = e;
         const response = await axios.get(`api/approve/seller/${ID}/${IDs}`);
         const { message } = response.data;
-        setData(salespersons)
+        GetAllSaleMan();
         enqueueSnackbar(message);
     }
     const SalePersonDeactivaID = async (e) => {
@@ -79,8 +83,7 @@ export default function SalesApproval() {
         const { message } = response.data;
         // console.log(response.data)
         enqueueSnackbar(message);
-        setData(salespersons)
-        getallsaleman(ID);
+        GetAllSaleMan();
     }
     const columns = [{
         name: "name",
@@ -118,6 +121,24 @@ export default function SalesApproval() {
         <Page title="SalePerson">
             <Container maxWidth={themeStretch ? false : 'lg'}>
                 <Grid>
+                <HeaderBreadcrumbs
+                        heading="SalePerson Approval"
+                        links={[
+                            { name: 'Dashboard', href: PATH_DASHBOARD.root },
+                            { name: 'SalesPerson Approval' },
+                        ]}
+                        action={
+                            <Button
+                                variant="contained"
+                                component={RouterLink}
+                                to={PATH_DASHBOARD.general.addNewSale}
+                                startIcon={<Iconify icon={'eva:plus-fill'} />}
+                            >
+                                New SalePerson
+                            </Button>
+                        }
+                    />
+
                     <Card>
                         {data !== null ?
                             <MUIDataTable

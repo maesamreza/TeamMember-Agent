@@ -17,7 +17,7 @@ import {
   EcommerceLatestProducts,
   EcommerceCurrentBalance,
 } from '../../sections/@dashboard/general/e-commerce';
-import SaleApprovalTable from "../../sections/@dashboard/agentApproval/SalePersonAprovalTable"
+import SaleApprovalTable from "../../sections/@dashboard/agentApproval/SalesApprovalAgents"
 // ----------------------------------------------------------------------
 
 export default function SalesApproval() {

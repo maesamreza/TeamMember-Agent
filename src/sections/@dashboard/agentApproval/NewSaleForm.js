@@ -90,7 +90,7 @@ export default function AddNewForm() {
             const { message } = response.data;
             enqueueSnackbar(message);
             getallsaleman(userID);
-            navigate(PATH_DASHBOARD.general.agentApproval);
+            navigate(PATH_DASHBOARD.general.saleApproval);
         } catch (error) {
             console.error(error);
         }

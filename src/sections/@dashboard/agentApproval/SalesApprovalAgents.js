@@ -55,7 +55,7 @@ export default function SalesApproval() {
     const theme = useTheme();
     const { themeStretch } = useSettings();
     const { enqueueSnackbar } = useSnackbar();
-    const ID = localStorage.getItem('AgentViewID')
+    const ID = localStorage.getItem('UserID')
     useEffect(() => {
         try {
             GetAllSaleMan();
@@ -72,41 +72,113 @@ export default function SalesApproval() {
     }
     const SalePersonID = async (e) => {
         const IDs = e;
-        const response = await axios.get(`api/approve/seller/${ID}/${IDs}`);
+        const response = await axios.get(`api/approve/seller/${IDs}/${ID}`);
         const { message } = response.data;
         GetAllSaleMan();
         enqueueSnackbar(message);
     }
     const SalePersonDeactivaID = async (e) => {
-        const ID = e;
-        const response = await axios.get(`api/deactive/agent/${ID}`);
+        const IDs = e;
+        const response = await axios.get(`api/deactive/seller/${IDs}/${ID}`);
         const { message } = response.data;
         // console.log(response.data)
         enqueueSnackbar(message);
         GetAllSaleMan();
     }
-    const columns = [{
-        name: "name",
-        label: "Name",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
-    {
-        name: "Actions",
-        options: {
-            customBodyRender: (row) => {
-                return (
-                    <>
-                        <Button size="small" variant="contained" style={{ margin: '10px' }} onClick={(e) => { SalePersonID(row.rowData[0]) }}>
-                            Apporve
-                        </Button>
-                    </>
-                );
+    const columns = [
+        {
+            name: "id",
+            label: "ID",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+        {
+            name: "name",
+            label: "Name",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+        {
+            name: "email",
+            label: "Email",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+        {
+            name: "phone",
+            label: "phone",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+        {
+            name: "city",
+            label: "City",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+        {
+            name: "country",
+            label: "country",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+        {
+            name: "state",
+            label: "state",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+        {
+            name: "is_active",
+            label: "Approve",
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value, row) => {
+                    return (
+                        <>
+                            {row.rowData[7] === 1 ? 'Aprrove' : 'Deactive'}
+                        </>
+                    );
+                }
+            },
+        },
+        {
+            name: "Actions",
+            options: {
+                customBodyRender: (value, row) => {
+                    return (
+                        <>
+                            {row.rowData[7] === 1 ?
+                                <LoadingButton size="small" variant="contained" style={{ margin: '10px' }} onClick={(e) => { SalePersonDeactivaID(row.rowData[0]) }} >
+                                    Deactive
+                                </LoadingButton>
+                                :
+                                <LoadingButton size="small" variant="contained" style={{ margin: '10px' }} onClick={(e) => { SalePersonID(row.rowData[0]) }} >
+                                    Apporve
+                                </LoadingButton>}
+                            {/* <LoadingButton size="small" variant="contained" onClick={(e) => { AgentViewID(row.rowData[0]) }}  >
+                                {`View`}
+                            </LoadingButton> */}
+                        </>
+                    );
+                }
             }
         }
-    }
     ];
     const options = {
         filterType: "dropdown",

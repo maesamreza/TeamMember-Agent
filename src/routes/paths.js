@@ -35,8 +35,13 @@ export const PATH_DASHBOARD = {
   general: {
     app: path(ROOTS_DASHBOARD, '/app'),
     agentApproval: path(ROOTS_DASHBOARD, '/agentApproval'),
-    saleApproval: path(ROOTS_DASHBOARD, '/saleApproval'),
+    saleApproval: path(ROOTS_DASHBOARD, '/saleApproval'), 
+    license: path(ROOTS_DASHBOARD, '/license'), 
     addNewSale: path(ROOTS_DASHBOARD, '/addSale'),
+    group: path(ROOTS_DASHBOARD, '/group'),
+
+
+
     ecommerce: path(ROOTS_DASHBOARD, '/ecommerce'),
     analytics: path(ROOTS_DASHBOARD, '/analytics'),
     banking: path(ROOTS_DASHBOARD, '/banking'),

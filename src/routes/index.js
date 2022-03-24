@@ -67,8 +67,8 @@ export default function Router() {
         { path: 'agentApproval', element: <AgentApproval /> },
         { path: 'saleApproval', element: <SaleApproval /> },
         { path: 'addSale', element: <AddNewSale /> },
-        { path: 'analytics', element: <GeneralAnalytics /> },
-        { path: 'banking', element: <GeneralBanking /> },
+        { path: 'license', element: <LicenseTable /> },
+        { path: 'group', element: <Groups /> },
         { path: 'booking', element: <GeneralBooking /> },
 
         {
@@ -168,6 +168,12 @@ const GeneralApp = Loadable(lazy(() => import('../pages/dashboard/GeneralApp')))
 const AgentApproval = Loadable(lazy(() => import('../pages/dashboard/SalesPersonApproval')));
 const AddNewSale = Loadable(lazy(() => import('../pages/dashboard/AddNewSale')));
 const SaleApproval = Loadable(lazy(() => import('../pages/dashboard/SaleApproval')));
+const LicenseTable = Loadable(lazy(() => import('../pages/dashboard/LicenseTable')));
+const Groups = Loadable(lazy(() => import('../pages/dashboard/Groups')));
+
+
+
+
 const GeneralAnalytics = Loadable(lazy(() => import('../pages/dashboard/GeneralAnalytics')));
 const GeneralBanking = Loadable(lazy(() => import('../pages/dashboard/GeneralBanking')));
 const GeneralBooking = Loadable(lazy(() => import('../pages/dashboard/GeneralBooking')));

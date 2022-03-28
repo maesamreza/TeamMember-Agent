@@ -53,6 +53,8 @@ export default function LicenseTab() {
     const theme = useTheme();
     const { themeStretch } = useSettings();
     const { enqueueSnackbar } = useSnackbar();
+    const [showData, setShowData] = useState(false)
+
     const ID = localStorage.getItem('UserID')
     useEffect(() => {
         try {
@@ -63,11 +65,12 @@ export default function LicenseTab() {
         }
     }, [])
     const GetAllUsableLicnese = async () => {
+        setShowData(false)
         const response = await axios.post(`api/license/usable/${ID}`);
         const { message, License } = response.data;
         setData(License)
         enqueueSnackbar(message);
-
+        setShowData(false)
     }
 
 
@@ -132,21 +135,21 @@ export default function LicenseTab() {
 
 
     return (
-       
-                    <Grid item xs={12} md={12}>
 
-                        <Card>
-                            {data !== null ?
-                                <MUIDataTable
-                                    title={"Useable License"}
-                                    data={data}
-                                    columns={columns}
-                                    options={options}
-                                /> : 'No license'}
-                        </Card>
-                    </Grid>
+        <Grid item xs={12} md={12}>
 
-               
+            <Card>
+                {!showData  ?
+                    <MUIDataTable
+                        title={"Useable License"}
+                        data={data}
+                        columns={columns}
+                        options={options}
+                    /> : 'No license'}
+            </Card>
+        </Grid>
+
+
     );
 }
 

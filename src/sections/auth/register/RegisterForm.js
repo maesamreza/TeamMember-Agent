@@ -1,7 +1,13 @@
 import * as Yup from 'yup';
 import { useState } from 'react';
 import { useSnackbar } from 'notistack';
-
+import { loadStripe } from '@stripe/stripe-js';
+import {
+  CardElement,
+  Elements,
+  useStripe,
+  useElements,
+} from '@stripe/react-stripe-js';
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -76,52 +82,85 @@ export default function RegisterForm() {
     }
   };
 
+  const stripePromise = loadStripe('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
+
+  const CheckoutForm = () => {
+    const stripe = useStripe();
+    const elements = useElements();
+
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+
+      if (elements == null) {
+        return;
+      }
+
+      const { error, paymentMethod } = await stripe.createPaymentMethod({
+        type: 'card',
+        card: elements.getElement(CardElement),
+      });
+    };
+
+    const stripePromise = loadStripe('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
+
+    return (
+      <form onSubmit={handleSubmit}>
+        <CardElement />
+        <button type="submit" disabled={!stripe || !elements}>
+          Pay
+        </button>
+      </form>
+    );
+  };
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={3}>
-        {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
+    <Elements stripe={stripePromise}>
+      <CheckoutForm />
+    </Elements>
+    // <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    //   <Stack spacing={3}>
+    //     {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
 
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-          <RHFTextField name="firstName" label="First Name" />
-          <RHFTextField name="lastName" label="Last Name" />
-        </Stack>
+    //     <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+    //       <RHFTextField name="firstName" label="First Name" />
+    //       <RHFTextField name="lastName" label="Last Name" />
+    //     </Stack>
 
-        <RHFTextField name="state" label="State/Region" />
-        <RHFTextField name="email" label="Email Address" />
+    //     <RHFTextField name="state" label="State/Region" />
+    //     <RHFTextField name="email" label="Email Address" />
 
-        <RHFTextField
-          name="password"
-          label="Password"
-          type={showPassword ? 'text' : 'password'}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton edge="end" onClick={() => setShowPassword(!showPassword)}>
-                  <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
+    //     <RHFTextField
+    //       name="password"
+    //       label="Password"
+    //       type={showPassword ? 'text' : 'password'}
+    //       InputProps={{
+    //         endAdornment: (
+    //           <InputAdornment position="end">
+    //             <IconButton edge="end" onClick={() => setShowPassword(!showPassword)}>
+    //               <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+    //             </IconButton>
+    //           </InputAdornment>
+    //         ),
+    //       }}
+    //     />
 
-        <RHFTextField
-          name="confirmpassword"
-          label="ConfirmPassword"
-          type={showPassword ? 'text' : 'password'}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton edge="end" onClick={() => setShowPassword(!showPassword)}>
-                  <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-        <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
-          Register
-        </LoadingButton>
-      </Stack>
-    </FormProvider>
+    //     <RHFTextField
+    //       name="confirmpassword"
+    //       label="ConfirmPassword"
+    //       type={showPassword ? 'text' : 'password'}
+    //       InputProps={{
+    //         endAdornment: (
+    //           <InputAdornment position="end">
+    //             <IconButton edge="end" onClick={() => setShowPassword(!showPassword)}>
+    //               <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+    //             </IconButton>
+    //           </InputAdornment>
+    //         ),
+    //       }}
+    //     />
+    //     <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
+    //       Register
+    //     </LoadingButton>
+    //   </Stack>
+    // </FormProvider>
   );
 }

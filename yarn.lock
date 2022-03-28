@@ -2408,10 +2408,10 @@
     "prop-types" "^15.7.2"
     "react-is" "^17.0.2"
 
-"@mui/icons-material@^5.0.1":
-  "integrity" "sha512-7zoRpjO8vsd+bPvXq6rtXu0V8Saj70X09dtTQogZmxQKabrYW3g7+Yym7SCRA7IYVF3ysz2AvdQrGD1P/sGepg=="
-  "resolved" "https://registry.npmjs.org/@mui/icons-material/-/icons-material-5.4.4.tgz"
-  "version" "5.4.4"
+"@mui/icons-material@^5.0.1", "@mui/icons-material@^5.5.0":
+  "integrity" "sha512-rMs5flT3INyd/m1A/x8DDlNTfHmCartX8stCuSDDMmaMV123oSwg8werJ/Hg4j1FWuVk5rE5HRY45gBf12BCGw=="
+  "resolved" "https://registry.npmjs.org/@mui/icons-material/-/icons-material-5.5.0.tgz"
+  "version" "5.5.0"
   dependencies:
     "@babel/runtime" "^7.17.2"
 
@@ -2832,6 +2832,18 @@
   "version" "6.0.1"
   dependencies:
     "@sinonjs/commons" "^1.7.0"
+
+"@stripe/react-stripe-js@^1.7.0":
+  "integrity" "sha512-L20v8Jq0TDZFL2+y+uXD751t6q9SalSFkSYZpmZ2VWrGZGK7HAGfRQ804dzYSSr5fGenW6iz6y7U0YKfC/TK3g=="
+  "resolved" "https://registry.npmjs.org/@stripe/react-stripe-js/-/react-stripe-js-1.7.0.tgz"
+  "version" "1.7.0"
+  dependencies:
+    "prop-types" "^15.7.2"
+
+"@stripe/stripe-js@^1.20.3", "@stripe/stripe-js@^1.25.0":
+  "integrity" "sha512-cywIoKu3sJnBPQ1eKi3BzFHWslA2ePqHvQhcxp7iYYlo1tWcVgEKTSh7y7hb6GoR4TyT3DwlK4v1vOZpVg8u4Q=="
+  "resolved" "https://registry.npmjs.org/@stripe/stripe-js/-/stripe-js-1.25.0.tgz"
+  "version" "1.25.0"
 
 "@surma/rollup-plugin-off-main-thread@^1.1.1":
   "integrity" "sha512-yBMPqmd1yEJo/280PAMkychuaALyQ9Lkb5q1ck3mjJrFuEobIfhnQ4J3mbvBoISmR3SWMWV+cGB/I0lCQee79A=="
@@ -15518,10 +15530,10 @@
     "y18n" "^5.0.5"
     "yargs-parser" "^20.2.2"
 
-"yarn@^1.22.17":
-  "integrity" "sha512-H0p241BXaH0UN9IeH//RT82tl5PfNraVpSpEoW+ET7lmopNC61eZ+A+IDvU8FM6Go5vx162SncDL8J1ZjRBriQ=="
-  "resolved" "https://registry.npmjs.org/yarn/-/yarn-1.22.17.tgz"
-  "version" "1.22.17"
+"yarn@^1.22.18":
+  "integrity" "sha512-oFffv6Jp2+BTUBItzx1Z0dpikTX+raRdqupfqzeMKnoh7WD6RuPAxcqDkMUy9vafJkrB0YaV708znpuMhEBKGQ=="
+  "resolved" "https://registry.npmjs.org/yarn/-/yarn-1.22.18.tgz"
+  "version" "1.22.18"
 
 "yocto-queue@^0.1.0":
   "integrity" "sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q=="

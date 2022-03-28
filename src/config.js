@@ -4,7 +4,7 @@ import { PATH_DASHBOARD } from './routes/paths';
 // API
 // ----------------------------------------------------------------------
 
-export const HOST_API = 'https://team.devha.xyz/' || 'https://team.devha.xyz/';
+export const HOST_API = 'https://teamapi.developer-nuh.xyz/' || 'https://teamapi.developer-nuh.xyz/';
 
 export const FIREBASE_API = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,

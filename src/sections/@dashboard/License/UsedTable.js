@@ -43,6 +43,7 @@ import Scrollbar from '../../../components/Scrollbar';
 import SearchNotFound from '../../../components/SearchNotFound';
 // sections
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../user/list';
+import LoadingScreen from '../../../components/LoadingScreen';
 
 // ----------------------------------------------------------------------
 
@@ -55,6 +56,8 @@ export default function UseLicenseTab() {
     const { themeStretch } = useSettings();
     const { enqueueSnackbar } = useSnackbar();
     const ID = localStorage.getItem('UserID')
+    const [showData, setShowData] = useState(false)
+
     useEffect(() => {
         try {
 
@@ -70,6 +73,10 @@ export default function UseLicenseTab() {
         setData2(License)
         enqueueSnackbar(message);
 
+        setTimeout(() => {
+           
+            setShowData(true)
+        }, 100);
     }
 
 
@@ -137,13 +144,13 @@ export default function UseLicenseTab() {
         <Grid item xs={12} md={12}>
 
             <Card>
-                {data2 !== null ?
+                {showData ? 
                     <MUIDataTable
                         title={"Used License"}
                         data={data2}
                         columns={columns2}
                         options={options2}
-                    /> : 'No license'}
+                    /> : <LoadingScreen />}
             </Card>
         </Grid>
 

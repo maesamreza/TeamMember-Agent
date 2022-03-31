@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 // @mui
 import { useTheme, styled } from '@mui/material/styles';
-import { Box, Stack, Drawer, IconButton, Avatar, ListItemAvatar, Typography, Divider, List, ListItemText } from '@mui/material';
+import { Box, Stack, Drawer, ListSubheader, Typography, Divider, List, ListItem, ListItemText } from '@mui/material';
 // redux
 import { useSelector } from '../../../redux/store';
 // hooks
@@ -12,32 +12,13 @@ import axios from '../../../utils/axios';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // components
-import Iconify from '../../../components/Iconify';
-import Label from '../../../components/Label';
 import Scrollbar from '../../../components/Scrollbar';
 //
 import ChatAccount from './ChatAccount';
-import ChatConversationList from './ChatConversationList';
-import MyAvatar from '../../../components/MyAvatar';
 
-import BadgeStatus from '../../../components/BadgeStatus';
+
 // ----------------------------------------------------------------------
 
-const ToggleButtonStyle = styled((props) => <IconButton disableRipple {...props} />)(({ theme }) => ({
-    left: 0,
-    zIndex: 9,
-    width: 32,
-    height: 32,
-    position: 'absolute',
-    top: theme.spacing(13),
-    borderRadius: `0 12px 12px 0`,
-    color: theme.palette.primary.contrastText,
-    backgroundColor: theme.palette.primary.main,
-    boxShadow: theme.customShadows.primary,
-    '&:hover': {
-        backgroundColor: theme.palette.primary.darker,
-    },
-}));
 
 // ----------------------------------------------------------------------
 
@@ -80,45 +61,64 @@ export default function ChatSidebar(props) {
 
     const isCollapse = isDesktop && !openSidebar;
 
-    useEffect(() => {
-        getGroups();
-
-        if (!isDesktop) {
-            return handleCloseSidebar();
-        }
-        return handleOpenSidebar();
-    }, [isDesktop, pathname]);
 
     // eslint-disable-next-line consistent-return
-    useEffect(() => {
-    }, []);
 
     useEffect(() => {
         getGroups();
+        getOtherGroups();
     }, [props]);
     const handleOpenSidebar = () => {
         setOpenSidebar(true);
     };
-
+    console.log(props)
     const handleCloseSidebar = () => {
         setOpenSidebar(false);
     };
 
     const [group, setGroups] = useState([]);
+    const [othergroup, setotherGroups] = useState([]);
+
+    const [isLoading, setisLoading] = useState(false);
+    const [isLoading2, setisLoading2] = useState(false);
 
     const getGroups = async () => {
-        const response = await axios.get(`api/agent/groupes/${userID}`);
-        const { message, groupes } = response.data;
+        setisLoading(false)
+        const response = await axios.get(`api/agent/own/groupes/${userID}`);
+        const { message, groupes, status } = response.data;
         // console.log(groupes)
-        setGroups(groupes)
+        if (status === 'success') {
+            setGroups(groupes)
+            setisLoading(true)
+        } else {
+            setisLoading(false)
+        }
     }
+    const getOtherGroups = async () => {
+        setisLoading2(false)
+        const response = await axios.get(`api/agent/groupes/${userID}`);
+        const { message, groupes, status } = response.data;
+        // console.log(groupes)
+        if (status === 'success') {
+            setotherGroups(groupes)
+            setisLoading2(true)
+        } else {
+            setisLoading2(false)
+        }
+    }
+    const View = (id) => {
+        navigate(`/dashboard/group/${id}`)
+    }
+
+
+
     const renderContent = (
         <>
             <Box sx={{ py: 2, px: 3 }}>
                 <Stack direction="row" alignItems="center" justifyContent="center">
                     {!isCollapse && (
                         <>
-                            <ChatAccount />
+                            {/* <ChatAccount /> */}
                             <Box sx={{ flexGrow: 1 }} > <Typography variant="h6" align="center" sx={{ color: 'text.secondary' }} gutterBottom>Groups</Typography></Box>
                         </>
                     )}
@@ -129,19 +129,46 @@ export default function ChatSidebar(props) {
             </Box>
             <Divider />
             <Scrollbar>
-                <List disablePadding >
-                    {group.map((option) => (
-                        <>
-                            <ListItemAvatar sx={{ cursor: 'pointer' }}>
-                                <Typography variant="h6" align="center" sx={{ color: 'text.secondary', m: 1 }} gutterBottom>
-                                    {option.name}
-                                </Typography>
-                                <Divider />
-                            </ListItemAvatar>
-                        </>
-                    ))}
-
+                <List
+                    sx={{
+                        width: '100%',
+                        maxWidth: 360,
+                        bgcolor: 'background.paper',
+                        position: 'relative',
+                        overflow: 'auto',
+                        maxHeight: 1000,
+                        '& ul': { padding: 0 },
+                    }}
+                    subheader={<li />}
+                >
+                    <li key={`section-1`}>
+                        <ul>
+                            <ListSubheader>{`Own Group`}</ListSubheader>
+                            {!isLoading ? <ListItem key={`item-${'1'}-${'1'}`}>
+                                <ListItemText primary={`No Gourp`} />
+                            </ListItem> :
+                                group.map((section) => (
+                                    <ListItem key={`item-${section.id}-${section.id}`} sx={{ cursor: 'pointer' }} onClick={(e) => { View(section.id) }}>
+                                        <ListItemText primary={` ${section.name}`} />
+                                    </ListItem>
+                                ))}
+                        </ul>
+                    </li>
+                    <li key={`section-1`}>
+                        <ul>
+                            <ListSubheader>{`Other Group`}</ListSubheader>
+                            {!isLoading2 ? <ListItem key={`item-${'1'}-${'1'}`}>
+                                <ListItemText primary={`No Gourp`} />
+                            </ListItem> :
+                                othergroup.map((section) => (
+                                    <ListItem key={`item-${section.id}-${section.id}`} sx={{ cursor: 'pointer' }} onClick={(e) => { View(section.id) }}>
+                                        <ListItemText primary={` ${section.name}`} />
+                                    </ListItem>
+                                ))}
+                        </ul>
+                    </li>
                 </List>
+
             </Scrollbar>
 
         </>

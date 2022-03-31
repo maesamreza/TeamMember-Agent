@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSnackbar } from 'notistack';
+import $ from 'jquery';
 import { loadStripe } from '@stripe/stripe-js';
 import {
   CardElement,
@@ -12,7 +13,7 @@ import {
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
-import { Stack, IconButton, InputAdornment, Alert } from '@mui/material';
+import { Stack, IconButton, InputAdornment, Alert, Box, Modal, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // hooks
 import useAuth from '../../../hooks/useAuth';
@@ -22,8 +23,20 @@ import axios from '../../../utils/axios';
 // components
 import Iconify from '../../../components/Iconify';
 import { FormProvider, RHFTextField } from '../../../components/hook-form';
-
+import StriImg from '../../../assets/image/Stripe_logo.png'
 // ----------------------------------------------------------------------
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  background: ` linear-gradient(to bottom, rgba(255, 255, 255, 0.52), rgba(255, 255, 255, 0.73)),url(${StriImg})`,
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+  backgroundSize: 'cover'
+};
 
 export default function RegisterForm() {
   const { register } = useAuth();
@@ -74,15 +87,40 @@ export default function RegisterForm() {
       formData.append("state", data.state)
       formData.append("password", data.password)
       formData.append("confirmpassword", data.confirmpassword)
+      formData.append("paymentMethod", PaymentID)
+      formData.append("priceId", PriceID)
       const response = await axios.post(`api/register`, formData);
       const { message } = response.data;
       enqueueSnackbar(message);
+      handleClose()
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const [StripeKey, setStripeKey] = useState('');
+  const [PriceID, setPriceID] = useState('');
+  const [PaymentID, setPaymentID] = useState('');
+  const SripeInfo = async () => {
+    try {
+      const response = await axios.get(`api/stripe/info`);
+      const { prices, testKey } = response.data.data;
+      setStripeKey(testKey);
+      setPriceID(prices[0]?.price_id);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const stripePromise = loadStripe('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
+  useEffect(() => {
+    SripeInfo()
+    
+  }, [])
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+
 
   const CheckoutForm = () => {
     const stripe = useStripe();
@@ -99,68 +137,92 @@ export default function RegisterForm() {
         type: 'card',
         card: elements.getElement(CardElement),
       });
+      setPaymentID(paymentMethod.id)
+      $('#bbn').trigger('click');
+
     };
 
-    const stripePromise = loadStripe('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
 
     return (
       <form onSubmit={handleSubmit}>
-        <CardElement />
-        <button type="submit" disabled={!stripe || !elements}>
-          Pay
-        </button>
+        <Box>
+          <Typography variant="h4" sx={{ mb: 5 }}>
+            Card details
+          </Typography>
+          <CardElement />
+
+          <LoadingButton fullWidth size="small" sx={{ mt: 5 }} variant="contained" type="submit" disabled={!stripe || !elements}>
+            Pay
+          </LoadingButton>
+        </Box>
+
       </form>
     );
   };
+  const stripePromise = loadStripe(StripeKey);
   return (
-    <Elements stripe={stripePromise}>
-      <CheckoutForm />
-    </Elements>
-    // <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-    //   <Stack spacing={3}>
-    //     {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
+    <>
+      <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+        <Stack spacing={3}>
+          {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
 
-    //     <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-    //       <RHFTextField name="firstName" label="First Name" />
-    //       <RHFTextField name="lastName" label="Last Name" />
-    //     </Stack>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+            <RHFTextField name="firstName" label="First Name" />
+            <RHFTextField name="lastName" label="Last Name" />
+          </Stack>
 
-    //     <RHFTextField name="state" label="State/Region" />
-    //     <RHFTextField name="email" label="Email Address" />
+          <RHFTextField name="state" label="State/Region" />
+          <RHFTextField name="email" label="Email Address" />
 
-    //     <RHFTextField
-    //       name="password"
-    //       label="Password"
-    //       type={showPassword ? 'text' : 'password'}
-    //       InputProps={{
-    //         endAdornment: (
-    //           <InputAdornment position="end">
-    //             <IconButton edge="end" onClick={() => setShowPassword(!showPassword)}>
-    //               <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-    //             </IconButton>
-    //           </InputAdornment>
-    //         ),
-    //       }}
-    //     />
+          <RHFTextField
+            name="password"
+            label="Password"
+            type={showPassword ? 'text' : 'password'}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton edge="end" onClick={() => setShowPassword(!showPassword)}>
+                    <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
 
-    //     <RHFTextField
-    //       name="confirmpassword"
-    //       label="ConfirmPassword"
-    //       type={showPassword ? 'text' : 'password'}
-    //       InputProps={{
-    //         endAdornment: (
-    //           <InputAdornment position="end">
-    //             <IconButton edge="end" onClick={() => setShowPassword(!showPassword)}>
-    //               <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-    //             </IconButton>
-    //           </InputAdornment>
-    //         ),
-    //       }}
-    //     />
-    //     <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
-    //       Register
-    //     </LoadingButton>
-    //   </Stack>
-    // </FormProvider>
+          <RHFTextField
+            name="confirmpassword"
+            label="ConfirmPassword"
+            type={showPassword ? 'text' : 'password'}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton edge="end" onClick={() => setShowPassword(!showPassword)}>
+                    <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+          <LoadingButton fullWidth size="large" variant="contained" onClick={handleOpen} >
+            Payment
+          </LoadingButton>
+          <input type='submit' id='bbn' style={{ display: 'none' }} />
+
+        </Stack>
+
+      </FormProvider>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Elements stripe={stripePromise}>
+            <CheckoutForm />
+          </Elements>
+        </Box>
+      </Modal>
+    </>
   );
 }

@@ -69,6 +69,7 @@ export default function Router() {
         { path: 'addSale', element: <AddNewSale /> },
         { path: 'license', element: <LicenseTable /> },
         { path: 'group', element: <Groups /> },
+        { path: 'group/:id', element: <Groups /> },
         { path: 'booking', element: <GeneralBooking /> },
 
         {

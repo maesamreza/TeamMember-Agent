@@ -40,6 +40,8 @@ import Iconify from '../../../components/Iconify';
 import Scrollbar from '../../../components/Scrollbar';
 import SearchNotFound from '../../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
+import LoadingScreen from '../../../components/LoadingScreen';
+
 // sections
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../user/list';
 
@@ -70,7 +72,11 @@ export default function LicenseTab() {
         const { message, License } = response.data;
         setData(License)
         enqueueSnackbar(message);
-        setShowData(false)
+
+       setTimeout(() => {
+           
+           setShowData(true)
+       }, 100);
     }
 
 
@@ -139,13 +145,13 @@ export default function LicenseTab() {
         <Grid item xs={12} md={12}>
 
             <Card>
-                {!showData  ?
+                {showData ?
                     <MUIDataTable
                         title={"Useable License"}
                         data={data}
                         columns={columns}
                         options={options}
-                    /> : 'No license'}
+                    /> : <LoadingScreen />}
             </Card>
         </Grid>
 

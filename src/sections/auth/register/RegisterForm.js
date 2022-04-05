@@ -12,9 +12,13 @@ import {
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useNavigate } from 'react-router-dom';
+
 // @mui
 import { Stack, IconButton, InputAdornment, Alert, Box, Modal, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+// routes
+import { PATH_AUTH } from '../../../routes/paths';
 // hooks
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
@@ -24,6 +28,7 @@ import axios from '../../../utils/axios';
 import Iconify from '../../../components/Iconify';
 import { FormProvider, RHFTextField } from '../../../components/hook-form';
 import StriImg from '../../../assets/image/Stripe_logo.png'
+import LoadingScreen from '../../../components/LoadingScreen';
 // ----------------------------------------------------------------------
 const style = {
   position: 'absolute',
@@ -41,12 +46,14 @@ const style = {
 export default function RegisterForm() {
   const { register } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
 
 
   const isMountedRef = useIsMountedRef();
 
   const [showPassword, setShowPassword] = useState(false);
 
+  const [isLoading,setisLoading]= useState(false)
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string().required('FirstName is required'),
     lastName: Yup.string().required('LastName is required'),
@@ -79,6 +86,7 @@ export default function RegisterForm() {
   } = methods;
 
   const onSubmit = async (data) => {
+    setisLoading(true)
     try {
       const formData = new FormData();
       formData.append("firstName", data.firstName)
@@ -93,6 +101,9 @@ export default function RegisterForm() {
       const { message } = response.data;
       enqueueSnackbar(message);
       handleClose()
+      navigate(PATH_AUTH.login)
+      setisLoading(false)
+
     } catch (error) {
       console.error(error);
     }
@@ -162,6 +173,7 @@ export default function RegisterForm() {
   const stripePromise = loadStripe(StripeKey);
   return (
     <>
+    {isLoading ? <LoadingScreen /> : null}
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={3}>
           {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}

@@ -33,6 +33,8 @@ const navConfig = [
       { title: 'Sales Approval', path: PATH_DASHBOARD.general.agentApproval, icon: ICONS.user },
       { title: 'License', path: PATH_DASHBOARD.general.license, icon: ICONS.cart },
       { title: 'Groups', path: PATH_DASHBOARD.general.group , icon: ICONS.chat },
+      { title: 'Buy License', path: PATH_DASHBOARD.general.package , icon: ICONS.cart },
+      { title: 'Rating', path: PATH_DASHBOARD.general.rating , icon: ICONS.analytics },
       // { title: 'analytics', path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics },
       // { title: 'banking', path: PATH_DASHBOARD.general.banking, icon: ICONS.banking },
       // { title: 'booking', path: PATH_DASHBOARD.general.booking, icon: ICONS.booking },

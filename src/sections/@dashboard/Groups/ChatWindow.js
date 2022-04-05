@@ -254,7 +254,7 @@ export default function ChatWindow() {
                 rating.map((section) => (
                   <ListItem key={`item-${section}-${section.id}`}>
                     <ListItemText secondary={`Agent: ${section.AgentName}`} />
-                    <ListItemText secondary={`SalesPerson: ${section.SalePersonName}`} />
+                    <ListItemText secondary={`Sales Person: ${section.SalePersonName}`} />
                     <ListItemText secondary={`State: ${section.SalePersonState}`} />
                     <ListItemText secondary={`TotalSale: ${section.TotalSale}`} />
                   

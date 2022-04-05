@@ -2,7 +2,7 @@ import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
-
+import moment from 'moment';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import {
@@ -20,6 +20,8 @@ import {
     TableContainer,
     TablePagination,
     Stack,
+    Modal,
+    Box
 } from '@mui/material';
 import MUIDataTable from "mui-datatables";
 import { LoadingButton } from '@mui/lab';
@@ -47,7 +49,17 @@ import { UserListHead, UserListToolbar, UserMoreMenu } from '../user/list';
 
 // ----------------------------------------------------------------------
 
-
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '100%',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+    backgroundSize: 'cover'
+};
 // ----------------------------------------------------------------------
 
 
@@ -85,6 +97,22 @@ export default function SalesApproval() {
         enqueueSnackbar(message);
         GetAllSaleMan();
     }
+    const SalePersonViewID = async (e) => {
+        const IDs = e;
+        const response = await axios.get(`api/seller/reports/${IDs}`);
+        const { message, reports } = response.data;
+        // console.log(response.data)
+        setData2(reports)
+        enqueueSnackbar(message);
+        GetAllSaleMan();
+    }
+    const [open, setOpen] = useState(false);
+    const handleOpen = (e) => {
+        setOpen(true)
+        SalePersonViewID(e)
+    }
+
+    const handleClose = () => setOpen(false);
     const columns = [
         {
             name: "id",
@@ -112,7 +140,7 @@ export default function SalesApproval() {
         },
         {
             name: "phone",
-            label: "phone",
+            label: "Phone",
             options: {
                 filter: true,
                 sort: true,
@@ -128,7 +156,7 @@ export default function SalesApproval() {
         },
         {
             name: "country",
-            label: "country",
+            label: "Country",
             options: {
                 filter: true,
                 sort: true,
@@ -136,7 +164,7 @@ export default function SalesApproval() {
         },
         {
             name: "state",
-            label: "state",
+            label: "State",
             options: {
                 filter: true,
                 sort: true,
@@ -171,9 +199,9 @@ export default function SalesApproval() {
                                 <LoadingButton size="small" variant="contained" style={{ margin: '10px' }} onClick={(e) => { SalePersonID(row.rowData[0]) }} >
                                     Apporve
                                 </LoadingButton>}
-                            {/* <LoadingButton size="small" variant="contained" onClick={(e) => { AgentViewID(row.rowData[0]) }}  >
+                            <LoadingButton size="small" variant="contained" onClick={(e) => { handleOpen(row.rowData[0]) }}>
                                 {`View`}
-                            </LoadingButton> */}
+                            </LoadingButton>
                         </>
                     );
                 }
@@ -183,21 +211,110 @@ export default function SalesApproval() {
     const options = {
         filterType: "dropdown",
         responsive: "scroll",
-        selectableRows: true
+        selectableRows: false,
     };
 
     const [data, setData] = useState([]);
 
+    const columns2 = [
+        {
+            name: "created_at",
+            label: "Date",
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value, row) => {
+                    return (
+                        <>
+                            {moment(value).format('D MMMM YYYY')}
+                        </>
+                    )
+                }
+            }
+        },
+        {
+            name: "AnnualizedHealthPremium",
+            label: "Annualized Health Premium",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+        {
+            name: "AnnualizedLifePremium",
+            label: "Annualized Life Premium",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+        {
+            name: "HealthApplications",
+            label: "Health Applications",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+        {
+            name: "LifeApplications",
+            label: "Life Applications",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+        {
+            name: "OtherFinancialServices",
+            label: "Other Financial Services",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+        {
+            name: "RawNewAutoQuotes",
+            label: "Raw New Auto Quotes",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+        {
+            name: "RawNewAutoWritten",
+            label: "Raw New Auto Written",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+        {
+            name: "TotalFireWritten",
+            label: "Total Fire Written",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+    ];
+    const options2 = {
+        filterType: "dropdown",
+        responsive: "scroll",
+        selectableRows: false,
+    };
+
+    const [data2, setData2] = useState([]);
+
 
     return (
-        <Page title="SalePerson">
+        <Page title="">
             <Container maxWidth={themeStretch ? false : 'lg'}>
                 <Grid>
-                <HeaderBreadcrumbs
-                        heading="SalePerson Approval"
+                    <HeaderBreadcrumbs
+                        heading="Sale Person Approval"
                         links={[
                             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-                            { name: 'SalesPerson Approval' },
+                            { name: 'Sales Person Approval' },
                         ]}
                         action={
                             <Button
@@ -206,7 +323,7 @@ export default function SalesApproval() {
                                 to={PATH_DASHBOARD.general.addNewSale}
                                 startIcon={<Iconify icon={'eva:plus-fill'} />}
                             >
-                                New SalePerson
+                                New Sale Person
                             </Button>
                         }
                     />
@@ -214,13 +331,30 @@ export default function SalesApproval() {
                     <Card>
                         {data !== null ?
                             <MUIDataTable
-                                title={"SalesPerson"}
+                                title={"Sales Person"}
                                 data={data}
                                 columns={columns}
                                 options={options}
-                            /> : 'No SalePerson'}
+                            /> : 'No Sale Person'}
                     </Card>
                 </Grid>
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={style}>
+                        {data2 !== null ?
+                            <MUIDataTable
+                                title={"Sales Person"}
+                                data={data2}
+                                columns={columns2}
+                                options={options2}
+                            /> : 'No Sale Person'}
+
+                    </Box>
+                </Modal>
             </Container>
         </Page >
     );

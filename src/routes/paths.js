@@ -39,6 +39,8 @@ export const PATH_DASHBOARD = {
     license: path(ROOTS_DASHBOARD, '/license'), 
     addNewSale: path(ROOTS_DASHBOARD, '/addSale'),
     group: path(ROOTS_DASHBOARD, '/group'),
+    package: path(ROOTS_DASHBOARD, '/packages'),
+    rating: path(ROOTS_DASHBOARD, '/rating'),
 
 
 

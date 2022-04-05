@@ -133,7 +133,7 @@ export default function LicenseTab() {
     const options = {
         filterType: "dropdown",
         responsive: "scroll",
-        selectableRows: true
+        selectableRows: false,
     };
 
     const [data, setData] = useState([]);

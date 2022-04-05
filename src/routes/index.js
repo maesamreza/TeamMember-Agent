@@ -70,7 +70,8 @@ export default function Router() {
         { path: 'license', element: <LicenseTable /> },
         { path: 'group', element: <Groups /> },
         { path: 'group/:id', element: <Groups /> },
-        { path: 'booking', element: <GeneralBooking /> },
+        { path: 'packages', element: <Packages /> },
+        { path: 'rating', element: <Rating /> },
 
         {
           path: 'e-commerce',
@@ -171,6 +172,8 @@ const AddNewSale = Loadable(lazy(() => import('../pages/dashboard/AddNewSale')))
 const SaleApproval = Loadable(lazy(() => import('../pages/dashboard/SaleApproval')));
 const LicenseTable = Loadable(lazy(() => import('../pages/dashboard/LicenseTable')));
 const Groups = Loadable(lazy(() => import('../pages/dashboard/Groups')));
+const Packages = Loadable(lazy(() => import('../pages/dashboard/BuyPackages')));
+const Rating = Loadable(lazy(() => import('../pages/dashboard/Rating')));
 
 
 

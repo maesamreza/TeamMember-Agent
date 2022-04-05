@@ -169,7 +169,7 @@ export default function AddNewForm() {
 
                         <Stack alignItems="flex-end" sx={{ mt: 3 }}>
                             <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                                Create SalePerson
+                                Create Sale Person
                             </LoadingButton>
                         </Stack>
                     </Card>

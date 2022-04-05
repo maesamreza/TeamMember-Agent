@@ -120,7 +120,7 @@ export default function SalesPersonApproval() {
         },
         {
             name: "phone",
-            label: "phone",
+            label: "Phone",
             options: {
                 filter: true,
                 sort: true,
@@ -136,7 +136,7 @@ export default function SalesPersonApproval() {
         },
         {
             name: "country",
-            label: "country",
+            label: "Country",
             options: {
                 filter: true,
                 sort: true,
@@ -144,7 +144,7 @@ export default function SalesPersonApproval() {
         },
         {
             name: "state",
-            label: "state",
+            label: "State",
             options: {
                 filter: true,
                 sort: true,
@@ -191,20 +191,20 @@ export default function SalesPersonApproval() {
     const options = {
         filterType: "dropdown",
         responsive: "scroll",
-        selectableRows: true
+        selectableRows: false,
     };
 
     // const [data, setData] = useState([]);
     const data = salePersons;
     return (
-        <Page title="SalePerson Appoval">
+        <Page title="">
             <Container maxWidth={themeStretch ? false : 'lg'}>
                 <Grid>
-                  
+
                     <Card>
                         {data !== null ?
                             <MUIDataTable
-                                title={"salePersons"}
+                                title={"Sale Persons"}
                                 data={data}
                                 columns={columns}
                                 options={options}

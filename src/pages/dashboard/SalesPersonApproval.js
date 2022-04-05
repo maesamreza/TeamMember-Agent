@@ -25,7 +25,7 @@ export default function SalesApproval() {
   const { themeStretch } = useSettings();
 
   return (
-    <Page title="SalePerson: Approval">
+    <Page title="">
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <Grid container spacing={3}>
           {

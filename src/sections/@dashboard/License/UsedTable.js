@@ -112,22 +112,22 @@ export default function UseLicenseTab() {
                 sort: true,
             }
         },
-        // {
-        //     name: "usableFor",
-        //     label: "UsableFor",
-        //     options: {
-        //         filter: true,
-        //         sort: true,
-        //     }
-        // },
-        // {
-        //     name: "usedFor",
-        //     label: "UsedFor",
-        //     options: {
-        //         filter: true,
-        //         sort: true,
-        //     }
-        // },
+        {
+            name: "usableFor",
+            label: "UsableFor",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+        {
+            name: "usedFor",
+            label: "UsedFor",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
 
     ];
     const options2 = {

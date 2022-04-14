@@ -17,13 +17,13 @@ export default function Rating() {
     const { themeStretch } = useSettings();
 
     return (
-        <Page title="">
+        <Page>
             <Container maxWidth={themeStretch ? false : 'lg'}>
                 <HeaderBreadcrumbs
-                    heading="Buy license"
+                    heading="Rating"
                     links={[
                         { name: 'Dashboard', href: PATH_DASHBOARD.root },
-                        { name: 'Packages', href: PATH_DASHBOARD.blog.root },
+                        { name: 'Rating', href: PATH_DASHBOARD.root },
                     ]}
                 />
 

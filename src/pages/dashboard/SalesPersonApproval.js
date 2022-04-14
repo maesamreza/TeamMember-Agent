@@ -25,15 +25,12 @@ export default function SalesApproval() {
   const { themeStretch } = useSettings();
 
   return (
-    <Page title="">
+    <Page>
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <Grid container spacing={3}>
-          {
-            <Grid item xs={12} md={12} lg={12}>
-              <SaleApprovalTable />
-            </Grid>
-          }
-
+          <Grid item xs={12} md={12} lg={12}>
+            <SaleApprovalTable />
+          </Grid>
         </Grid>
       </Container>
     </Page>

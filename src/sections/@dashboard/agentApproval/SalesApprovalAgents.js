@@ -58,7 +58,8 @@ const style = {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
-    backgroundSize: 'cover'
+    backgroundSize: 'cover',
+    background: '#000'
 };
 // ----------------------------------------------------------------------
 
@@ -197,7 +198,7 @@ export default function SalesApproval() {
                                 </LoadingButton>
                                 :
                                 <LoadingButton size="small" variant="contained" style={{ margin: '10px' }} onClick={(e) => { SalePersonID(row.rowData[0]) }} >
-                                    Apporve
+                                    Approve
                                 </LoadingButton>}
                             <LoadingButton size="small" variant="contained" onClick={(e) => { handleOpen(row.rowData[0]) }}>
                                 {`View`}
@@ -323,7 +324,7 @@ export default function SalesApproval() {
                                 to={PATH_DASHBOARD.general.addNewSale}
                                 startIcon={<Iconify icon={'eva:plus-fill'} />}
                             >
-                                New Sale Person
+                                New Sales Person
                             </Button>
                         }
                     />

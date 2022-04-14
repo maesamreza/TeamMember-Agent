@@ -23,7 +23,7 @@ export default function AddNewSale() {
   const [showResults, setShowResults] = useState(true)
 
   return (
-    <Page title="Agent: License">
+    <Page>
       <Container maxWidth={themeStretch ? false : 'xl'}>
 
         <Grid container spacing={3}>

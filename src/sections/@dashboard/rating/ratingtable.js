@@ -28,7 +28,14 @@ import {
     TablePagination,
     Stack,
     Box,
-    Modal
+    TextField,
+    Modal,
+    InputAdornment,
+    InputLabel,
+    MenuItem,
+    FormControl,
+    Select,
+
 } from '@mui/material';
 import MUIDataTable from "mui-datatables";
 import { LoadingButton } from '@mui/lab';
@@ -51,6 +58,8 @@ import SearchNotFound from '../../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 import LoadingScreen from '../../../components/LoadingScreen';
 import StriImg from '../../../assets/image/Stripe_logo.png'
+import InputStyle from '../../../components/InputStyle';
+
 // sections
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../user/list';
 
@@ -76,17 +85,18 @@ export default function SalesPacakges() {
     const { themeStretch } = useSettings();
     const { enqueueSnackbar } = useSnackbar();
     const [showData, setShowData] = useState(false)
-
+    const [Filter, setFilter] = useState('')
+    const [Search, setSearch] = useState('')
     const ID = localStorage.getItem('UserID')
     useEffect(() => {
         try {
-            GetAllLicences();
-           
+            GetAllRating();
+
         } catch (error) {
             console.log(error)
         }
     }, [])
-    const GetAllLicences = async () => {
+    const GetAllRating = async () => {
         setShowData(false)
         const response = await axios.get(`api/all/sellers/rating`);
         const { message, Rating } = response.data;
@@ -94,15 +104,31 @@ export default function SalesPacakges() {
         enqueueSnackbar(message);
 
         setTimeout(() => {
-
             setShowData(true)
-        }, 100);
+        }, 1000);
+    }
+    const FilterState = (event) => {
+        setFilter(event.target.value);
+    }
+    const SearchState = (event) => {
+        setSearch(event.target.value);
+    }
+    const FitlerRating = async () => {
+        setShowData(false)
+        const response = await axios.get(`api/all/sellers/rating?sort=${Filter}&search=${Search}`);
+        const { message, Rating } = response.data;
+        setData(Rating)
+        enqueueSnackbar(message);
+
+        setTimeout(() => {
+            setShowData(true)
+        }, 1000);
     }
 
 
     const columns = [
         {
-            name: "id",
+            name: "SalePersonId",
             label: "ID",
             options: {
                 filter: true,
@@ -173,7 +199,8 @@ export default function SalesPacakges() {
         filter: false,
         sort: false,
         print: false,
-        download: false
+        download: false,
+        search:false
     };
 
     const [data, setData] = useState([]);
@@ -185,6 +212,45 @@ export default function SalesPacakges() {
         <Grid item xs={12} md={12}>
 
             <Card>
+                <Stack direction="row-reverse" >
+
+                    <Button sx={{ m: 1, width: 20, height: 50 }} variant='outlined' onClick={(e)=>{FitlerRating()}}>Search</Button>
+
+                    <FormControl sx={{ m: 1, minWidth: 120 }}>
+                        <TextField
+
+                            placeholder="State"
+                            onChange={(e)=>{SearchState(e)}}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <Iconify icon={'eva:search-fill'} sx={{ ml: 1, width: 20, height: 20, color: 'text.disabled' }} />
+                                    </InputAdornment>
+                                ),
+                            }}
+
+                        />
+                    </FormControl>
+                    <FormControl sx={{ m: 1, minWidth: 120 }}>
+                        <InputLabel id="demo-simple-select-label">Filter</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={Filter}
+                            label="Filter"
+                            onChange={FilterState}
+                        >
+                            <MenuItem value={''}>Filter</MenuItem>
+                            <MenuItem value={'name'}>Name</MenuItem>
+                            <MenuItem value={'email'}>Email</MenuItem>
+                            <MenuItem value={'city'}>City</MenuItem>
+                            <MenuItem value={'country'}>Country</MenuItem>
+                            <MenuItem value={'phone'}>Phone</MenuItem>
+                            <MenuItem value={'state'}>State</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Stack>
+
                 {showData ?
                     <MUIDataTable
                         title={"Rating"}

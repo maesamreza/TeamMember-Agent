@@ -104,7 +104,7 @@ export default function Register() {
             <Box sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="h4" gutterBottom>
-                  Get started For $49
+                  Get started for $49
                 </Typography>
                
                 <Typography sx={{ color: 'text.secondary' }}> Simple Immediate Access</Typography>

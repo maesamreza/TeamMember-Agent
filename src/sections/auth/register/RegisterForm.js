@@ -58,6 +58,7 @@ export default function RegisterForm() {
     firstName: Yup.string().required('FirstName is required'),
     lastName: Yup.string().required('LastName is required'),
     email: Yup.string().required('Email is required').email(),
+    coupon: Yup.string(),
     state: Yup.string().required('Confirm Password is required'),
     password: Yup.string().required('Password is required'),
     confirmpassword: Yup.string().required('Confirm Password is required'),
@@ -68,6 +69,7 @@ export default function RegisterForm() {
     lastName: '',
     email: '',
     state: '',
+    coupon: '',
     password: '',
     confirmpassword: '',
   };
@@ -93,6 +95,7 @@ export default function RegisterForm() {
       formData.append("lastName", data.lastName)
       formData.append("email", data.email)
       formData.append("state", data.state)
+      formData.append("coupon", data.coupon)
       formData.append("password", data.password)
       formData.append("confirmpassword", data.confirmpassword)
       formData.append("paymentMethod", PaymentID)
@@ -185,6 +188,7 @@ export default function RegisterForm() {
 
           <RHFTextField name="state" label="State/Region" />
           <RHFTextField name="email" label="Email Address" />
+          <RHFTextField name="coupon" label="Coupon(if Avilble)" />
 
           <RHFTextField
             name="password"

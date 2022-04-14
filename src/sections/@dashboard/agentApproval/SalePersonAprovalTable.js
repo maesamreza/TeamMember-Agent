@@ -177,7 +177,7 @@ export default function SalesPersonApproval() {
                                 </LoadingButton>
                                 :
                                 <LoadingButton size="small" variant="contained" style={{ margin: '10px' }} onClick={(e) => { SaleID(row.rowData[0]) }} >
-                                    Apporve
+                                    Approve
                                 </LoadingButton>}
                             {/* <LoadingButton size="small" variant="contained" onClick={(e) => { AgentViewID(row.rowData[0]) }}  >
                                 {`View`}
@@ -204,7 +204,7 @@ export default function SalesPersonApproval() {
                     <Card>
                         {data !== null ?
                             <MUIDataTable
-                                title={"Sale Persons"}
+                                title={"Sales Persons"}
                                 data={data}
                                 columns={columns}
                                 options={options}

@@ -21,7 +21,9 @@ import {
     TablePagination,
     Stack,
     Modal,
-    Box
+    Box,
+    FormControl,
+    TextField
 } from '@mui/material';
 import MUIDataTable from "mui-datatables";
 import { LoadingButton } from '@mui/lab';
@@ -111,6 +113,7 @@ export default function SalesApproval() {
     const handleOpen = (e) => {
         setOpen(true)
         SalePersonViewID(e)
+        setUserID(e)
     }
 
     const handleClose = () => setOpen(false);
@@ -180,7 +183,7 @@ export default function SalesApproval() {
                 customBodyRender: (value, row) => {
                     return (
                         <>
-                            {row.rowData[7] === 1 ? 'Aprrove' : 'Deactive'}
+                            {row.rowData[7] === 1 ? 'Approve' : 'Deactive'}
                         </>
                     );
                 }
@@ -234,48 +237,8 @@ export default function SalesApproval() {
             }
         },
         {
-            name: "AnnualizedHealthPremium",
-            label: "Annualized Health Premium",
-            options: {
-                filter: true,
-                sort: true,
-            }
-        },
-        {
-            name: "AnnualizedLifePremium",
-            label: "Annualized Life Premium",
-            options: {
-                filter: true,
-                sort: true,
-            }
-        },
-        {
-            name: "HealthApplications",
-            label: "Health Applications",
-            options: {
-                filter: true,
-                sort: true,
-            }
-        },
-        {
-            name: "LifeApplications",
-            label: "Life Applications",
-            options: {
-                filter: true,
-                sort: true,
-            }
-        },
-        {
-            name: "OtherFinancialServices",
-            label: "Other Financial Services",
-            options: {
-                filter: true,
-                sort: true,
-            }
-        },
-        {
             name: "RawNewAutoQuotes",
-            label: "Raw New Auto Quotes",
+            label: "RawNewAutoQuotes",
             options: {
                 filter: true,
                 sort: true,
@@ -283,7 +246,7 @@ export default function SalesApproval() {
         },
         {
             name: "RawNewAutoWritten",
-            label: "Raw New Auto Written",
+            label: "RawNewAutoWritten",
             options: {
                 filter: true,
                 sort: true,
@@ -291,12 +254,52 @@ export default function SalesApproval() {
         },
         {
             name: "TotalFireWritten",
-            label: "Total Fire Written",
+            label: "TotalFireWritten",
             options: {
                 filter: true,
                 sort: true,
             }
         },
+        {
+            name: "LifeApplications",
+            label: "LifeApplications",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+        {
+            name: "AnnualizedLifePremium",
+            label: "AnnualizedLifePremium",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+        {
+            name: "HealthApplications",
+            label: "HealthApplications",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+        {
+            name: "AnnualizedHealthPremium",
+            label: "AnnualizedHealthPremium",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+        {
+            name: "OtherFinancialServices",
+            label: "OtherFinancialServices",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },  
     ];
     const options2 = {
         filterType: "dropdown",
@@ -305,7 +308,43 @@ export default function SalesApproval() {
     };
 
     const [data2, setData2] = useState([]);
+    const [StartDate, setStartDate] = useState('')
+    const [EndDate, setEndDate] = useState('')
+    const [UserID, setUserID] = useState('')
+    const [showData, setShowData] = useState(false)
+    const StartDateState = (event) => {
+        setStartDate(event.target.value);
+    }
+    const EndDateState = (event) => {
+        setEndDate(event.target.value);
+    }
+    const FitlerReports = async () => {
+        setShowData(false)
+        const response = await axios.get(`api/seller/reports/${UserID}?startdate=${StartDate}&enddate=${EndDate}`);
+        const { message, reports } = response.data;
+        enqueueSnackbar(message);
+        setData2(reports)
+        // const AHP = reports.map((e) => (e.AnnualizedHealthPremium))
+        // const ALP = reports.map((e) => (e.AnnualizedLifePremium))
+        // const HP = reports.map((e) => (e.HealthApplications))
+        // const LP = reports.map((e) => (e.LifeApplications))
+        // const OFS = reports.map((e) => (e.OtherFinancialServices))
+        // const RNAQ = reports.map((e) => (e.RawNewAutoQuotes))
+        // const RNAW = reports.map((e) => (e.RawNewAutoWritten))
+        // const TFW = reports.map((e) => (e.OtherFinancialServices))
+        // setAnnualizedHealthPremium(AHP)
+        // setAnnualizedLifePremium(ALP)
+        // setHealthApplications(HP)
+        // setLifeApplications(LP)
+        // setOtherFinancialServices(OFS)
+        // setRawNewAutoQuotes(RNAQ)
+        // setRawNewAutoWritten(RNAW)
+        // setTotalFireWritten(TFW)
 
+        setTimeout(() => {
+            setShowData(true)
+        }, 1000);
+    }
 
     return (
         <Page title="">
@@ -346,6 +385,25 @@ export default function SalesApproval() {
                     aria-describedby="modal-modal-description"
                 >
                     <Box sx={style}>
+                        <Stack direction="row-reverse" >
+
+                            <Button sx={{ m: 4, width: 20, height: 50 }} variant='outlined' onClick={(e) => { FitlerReports() }}>Search</Button>
+                            <FormControl sx={{ m: 1, minWidth: 120 }}>
+                                End Date<TextField
+                                    type='date'
+                                    placeholder="End Date"
+                                    onChange={(e) => { EndDateState(e) }}
+                                />
+                            </FormControl>
+                            <FormControl sx={{ m: 1, minWidth: 120 }}>
+                                Start Date  <TextField
+                                    type='date'
+                                    placeholder="Start Date"
+                                    onChange={(e) => { StartDateState(e) }}
+                                />
+                            </FormControl>
+
+                        </Stack>
                         {data2 !== null ?
                             <MUIDataTable
                                 title={"Sales Person"}

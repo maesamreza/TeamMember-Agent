@@ -22,7 +22,7 @@ import { PATH_AUTH } from '../../../routes/paths';
 // hooks
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
-// utilits 
+// utility 
 import axios from '../../../utils/axios';
 // components
 import Iconify from '../../../components/Iconify';
@@ -188,7 +188,7 @@ export default function RegisterForm() {
 
           <RHFTextField name="state" label="State/Region" />
           <RHFTextField name="email" label="Email Address" />
-          <RHFTextField name="coupon" label="Coupon(if Avilble)" />
+          <RHFTextField name="coupon" label="Coupon(if Available)" />
 
           <RHFTextField
             name="password"

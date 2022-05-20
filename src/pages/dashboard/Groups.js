@@ -120,7 +120,7 @@ export default function Group() {
                 startIcon={<Iconify icon={'eva:plus-fill'} />}
                 onClick={(e) => { JoinGroup(value) }}
               >
-                Join Group
+                Join Groups
               </Button>
             </>
           );

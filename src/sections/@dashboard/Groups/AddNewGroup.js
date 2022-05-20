@@ -19,7 +19,7 @@ import { PATH_DASHBOARD } from '../../../routes/paths';
 import { countries } from '../../../_mock';
 // components
 import Label from '../../../components/Label';
-import { FormProvider, RHFSelect, RHFSwitch, RHFTextField, RHFUploadAvatar } from '../../../components/hook-form';
+import { FormProvider, RHFSelect, RHFCheckbox, RHFTextField, RHFUploadAvatar } from '../../../components/hook-form';
 
 // ----------------------------------------------------------------------
 
@@ -37,6 +37,7 @@ export default function AddNewGroup(props) {
         () => ({
             name: '',
             des: '',
+            private: '',
         }),
 
     );
@@ -60,6 +61,7 @@ export default function AddNewGroup(props) {
             const formData = new FormData();
             formData.append("name", data.name)
             formData.append("des", data.des)
+            formData.append("private", data.private === true ? 1 : 0)
             const response = await axios.post(`api/add/groupe`, formData);
             const { message } = response.data;
             enqueueSnackbar(message);
@@ -86,6 +88,7 @@ export default function AddNewGroup(props) {
                         >
                             <RHFTextField name="name" label="Name" />
                             <RHFTextField name="des" label="Decsription" />
+                            <RHFCheckbox name='private' label='private' checked value='1' />
                         </Box>
 
                         <Stack alignItems="flex-end" sx={{ mt: 3 }}>

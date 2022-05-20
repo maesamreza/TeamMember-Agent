@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from 'react';
 import * as Yup from 'yup';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
-
+import MUIDataTable from "mui-datatables";
 // form
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -22,13 +22,17 @@ import {
   Popover,
   Modal,
   Card,
-  Grid
+  Grid,
+  TextField,
+  FormControl
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import UpgradeIcon from '@mui/icons-material/Upgrade';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { Remove } from '@mui/icons-material';
 
 // utils
 import axios from '../../../utils/axios';
@@ -113,8 +117,14 @@ export default function ChatWindow() {
   const ids = open ? 'simple-popover' : undefined;
   // Modal For Update 
   const [UpdateModal, setUpdateModal] = useState(false);
+  const [UpdateModal2, setUpdateModal2] = useState(false);
+  const [UpdateModal3, setUpdateModal3] = useState(false);
   const handleUpdateModalOpen = () => setUpdateModal(true);
   const handleUpdateModalClose = () => setUpdateModal(false);
+  const handleUpdateModalOpen2 = () => setUpdateModal2(true);
+  const handleUpdateModalClose2 = () => setUpdateModal2(false);
+  const handleUpdateModalOpen3 = () => setUpdateModal3(true);
+  const handleUpdateModalClose3 = () => setUpdateModal3(false);
   const NewUserSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     des: Yup.string().required('Description is required'),
@@ -123,7 +133,6 @@ export default function ChatWindow() {
   const defaultValues = useMemo(
     () => ({
       name: '',
-      des: '',
     }),
 
   );
@@ -160,7 +169,7 @@ export default function ChatWindow() {
   // Delet
   const Delete = async () => {
     try {
-      
+
       const response = await axios.post(`api/delete/groupe/${id}`);
       const { message } = response.data;
       enqueueSnackbar(message);
@@ -170,6 +179,85 @@ export default function ChatWindow() {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const Leave = async () => {
+    try {
+
+      const response = await axios.get(`api/leave/groupe/${id}`);
+      const { message } = response.data;
+      enqueueSnackbar(message);
+      getGroupsMember()
+      getGroupsMemberRating()
+      handleUpdateModalClose()
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const [StartDate, setStartDate] = useState('')
+  const [EndDate, setEndDate] = useState('')
+  const StartDateState = (event) => {
+    setStartDate(event.target.value);
+  }
+  const EndDateState = (event) => {
+    setEndDate(event.target.value);
+  }
+  const FitlerReports = async () => {
+    setisLoading2(false)
+    const response = await axios.get(`api/sellers/rating/groupe/${id}?startdate=${StartDate}&enddate=${EndDate}`);
+    const { Rating, status } = response.data;
+    // console.log(members)
+    if (status === 'success') {
+      setRating(Rating)
+      setisLoading2(true)
+    } else {
+      setisLoading(false)
+    }
+  }
+  const columns = [
+
+    {
+      name: "AgentName",
+      label: "AgentName",
+      options: {
+        filter: true,
+        sort: true,
+      }
+    },
+    {
+      name: "SalePersonName",
+      label: "SalePersonName",
+      options: {
+        filter: true,
+        sort: true,
+      }
+    },
+    {
+      name: "SalePersonState",
+      label: "SalePersonState",
+      options: {
+        filter: true,
+        sort: true,
+      }
+    },
+    {
+      name: "TotalSale",
+      label: "TotalSale",
+      options: {
+        filter: true,
+        sort: true,
+      }
+    },
+  ];
+  const options = {
+    filterType: "dropdown",
+    responsive: "scroll",
+    selectableRows: false,
+    viewColumns: false,
+    filter: false,
+    sort: false,
+    print: false,
+    download: false,
   };
   return (
     <Stack sx={{ flexGrow: 1, minWidth: '1px' }}>
@@ -204,13 +292,27 @@ export default function ChatWindow() {
                     Update Group
                   </Button>
                 </Stack>
-
+                <Stack direction="row" spacing={2}>
+                  <Button startIcon={<AddIcon />} onClick={handleUpdateModalOpen2}>
+                    Add Private Member
+                  </Button>
+                </Stack>
+                {/* <Stack direction="row" spacing={2}>
+                  <Button startIcon={<Remove />} onClick={handleUpdateModalOpen3}>
+                    Remove Private Member
+                  </Button>
+                </Stack> */}
                 <Stack direction="row" spacing={2} onClick={Delete}>
                   <Button startIcon={<DeleteIcon />}>
                     Delete Group
                   </Button>
                 </Stack>
 
+                <Stack direction="row" spacing={2} onClick={Leave}>
+                  <Button startIcon={<ExitToAppIcon />}>
+                    Leave Group
+                  </Button>
+                </Stack>
               </Popover>
             </Box>
           </>
@@ -234,9 +336,9 @@ export default function ChatWindow() {
             <ul>
               <ListItemText primary={`Members`} />
 
-              {!isLoading ?   <ListItem key={`item-${'1'}-${'1'}`}>
-                    <ListItemText primary={`No Gourp Member`} />
-                  </ListItem> :
+              {!isLoading ? <ListItem key={`item-${'1'}-${'1'}`}>
+                <ListItemText primary={`No Group Member`} />
+              </ListItem> :
                 memberss.map((section) => (
                   <ListItem key={`item-${section}-${section.id}`}>
                     <ListItemText primary={` ${section.name}`} />
@@ -246,20 +348,37 @@ export default function ChatWindow() {
           </li>
           <li key={`section-1`}>
             <ul>
-              <ListItemText primary={`RaTing`} />
+              <Stack direction="row-reverse" >
 
-              {!isLoading ?   <ListItem key={`item-${'1'}-${'1'}`}>
-                    <ListItemText primary={`No Gourp Member`} />
-                  </ListItem> :
-                rating.map((section) => (
-                  <ListItem key={`item-${section}-${section.id}`}>
-                    <ListItemText secondary={`Agent: ${section.AgentName}`} />
-                    <ListItemText secondary={`Sales Person: ${section.SalePersonName}`} />
-                    <ListItemText secondary={`State: ${section.SalePersonState}`} />
-                    <ListItemText secondary={`TotalSale: ${section.TotalSale}`} />
-                  
-                  </ListItem>
-                ))}
+                <Button sx={{ m: 4, width: 20, height: 50 }} variant='contained' onClick={(e) => { FitlerReports() }}>Search</Button>
+                <FormControl sx={{ m: 1, minWidth: 120 }}>
+                  End Date<TextField
+                    type='date'
+                    placeholder="End Date"
+                    onChange={(e) => { EndDateState(e) }}
+                  />
+                </FormControl>
+                <FormControl sx={{ m: 1, minWidth: 120 }}>
+                  Start Date  <TextField
+                    type='date'
+                    placeholder="Start Date"
+                    onChange={(e) => { StartDateState(e) }}
+                  />
+                </FormControl>
+
+              </Stack>
+
+              {!isLoading ? <ListItem key={`item-${'1'}-${'1'}`}>
+                <ListItemText primary={`No Group Member`} />
+              </ListItem> :
+
+                <MUIDataTable
+                  title={"Ranking"}
+                  data={rating}
+                  columns={columns}
+                  options={options}
+                />
+              }
             </ul>
           </li>
         </List>
@@ -299,7 +418,164 @@ export default function ChatWindow() {
           </FormProvider>
         </Box>
       </Modal>
+
+
+      <Modal
+        open={UpdateModal2}
+        onClose={handleUpdateModalClose3}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+        <AddMember />
+        </Box>
+      </Modal>
+
+      <Modal
+        open={UpdateModal3}
+        onClose={handleUpdateModalClose3}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+         <RemoveMember />
+        </Box>
+      </Modal>
     </Stack >
 
   );
+}
+
+const AddMember = () => {
+  const { id } = useParams();
+
+  const NewUserSchema = Yup.object().shape({
+    name: Yup.string().required('Name is required'),
+  });
+
+  const defaultValues = useMemo(
+    () => ({
+      name: '',
+    }),
+
+  );
+
+  const methods = useForm({
+    resolver: yupResolver(NewUserSchema),
+    defaultValues,
+  });
+
+  const {
+    watch,
+    handleSubmit,
+    setValue,
+    formState: { isSubmitting },
+  } = methods;
+
+  const values = watch();
+
+  const onSubmit = async (data) => {
+    try {
+      const formData = new FormData();
+      formData.append("name", data.name)
+      const response = await axios.post(`api/update/groupe/${id}`, formData);
+      const { message } = response.data;
+      
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  return (
+    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={12}>
+          <Card sx={{ p: 3 }}>
+            {/* <Box
+              sx={{
+                display: 'grid',
+                columnGap: 2,
+                rowGap: 3,
+                gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
+              }} */}
+            {/* > */}
+              <RHFTextField name="name" label="Name" />
+            {/* </Box> */}
+
+            <Stack alignItems="flex-end" sx={{ mt: 3 }}>
+              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+                Add Private Member
+              </LoadingButton>
+            </Stack>
+          </Card>
+        </Grid>
+      </Grid>
+    </FormProvider>
+  )
+}
+
+
+const RemoveMember = () => {
+  const { id } = useParams();
+
+  const NewUserSchema = Yup.object().shape({
+    name: Yup.string().required('Name is required'),
+  });
+
+  const defaultValues = useMemo(
+    () => ({
+      name: '',
+    }),
+
+  );
+
+  const methods = useForm({
+    resolver: yupResolver(NewUserSchema),
+    defaultValues,
+  });
+
+  const {
+    watch,
+    handleSubmit,
+    setValue,
+    formState: { isSubmitting },
+  } = methods;
+
+  const values = watch();
+
+  const onSubmit = async (data) => {
+    try {
+      const formData = new FormData();
+      formData.append("name", data.name)
+      const response = await axios.post(`api/update/groupe/${id}`, formData);
+      const { message } = response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  return (
+    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={12}>
+          <Card sx={{ p: 3 }}>
+            {/* <Box
+              sx={{
+                display: 'grid',
+                columnGap: 2,
+                rowGap: 3,
+                gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
+              }}
+            > */}
+              <RHFTextField name="name" label="Name" />
+            {/* </Box> */}
+
+            <Stack alignItems="flex-end" sx={{ mt: 3 }}>
+              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+                Remove Private Member
+              </LoadingButton>
+            </Stack>
+          </Card>
+        </Grid>
+      </Grid>
+    </FormProvider>
+  )
 }

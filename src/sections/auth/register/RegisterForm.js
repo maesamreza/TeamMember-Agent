@@ -26,7 +26,7 @@ import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import axios from '../../../utils/axios';
 // components
 import Iconify from '../../../components/Iconify';
-import { FormProvider, RHFTextField } from '../../../components/hook-form';
+import { FormProvider, RHFTextField ,RHFSelect} from '../../../components/hook-form';
 import StriImg from '../../../assets/image/Stripe_logo.png'
 import LoadingScreen from '../../../components/LoadingScreen';
 // ----------------------------------------------------------------------
@@ -53,7 +53,7 @@ export default function RegisterForm() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const [isLoading,setisLoading]= useState(false)
+  const [isLoading, setisLoading] = useState(false)
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string().required('FirstName is required'),
     lastName: Yup.string().required('LastName is required'),
@@ -126,9 +126,22 @@ export default function RegisterForm() {
   };
 
   useEffect(() => {
-    SripeInfo()
-    
+    SripeInfo();
+    State();
+
   }, [])
+  const [state, setState] = useState([])
+  const [Show2, setShow2] = useState(false)
+  const State = async () => {
+    try {
+      const response = await axios.get(`api/get/states`);
+      const { states } = response.data;
+      setState(states)
+      setShow2(true)
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -156,7 +169,6 @@ export default function RegisterForm() {
 
     };
 
-
     return (
       <form onSubmit={handleSubmit}>
         <Box>
@@ -176,7 +188,7 @@ export default function RegisterForm() {
   const stripePromise = loadStripe(StripeKey);
   return (
     <>
-    {isLoading ? <LoadingScreen /> : null}
+      {isLoading ? <LoadingScreen /> : null}
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={3}>
           {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
@@ -186,7 +198,15 @@ export default function RegisterForm() {
             <RHFTextField name="lastName" label="Last Name" />
           </Stack>
 
-          <RHFTextField name="state" label="State/Region" />
+          <RHFSelect name="state" label="State" >
+            <option value='' />
+            {!Show2 ? <option value='' >No State Found</option> :
+              state.map((option) => (
+                <option key={option.id} value={option.state}>
+                  {option.state} ({option.code})
+                </option>
+              ))}
+          </RHFSelect>
           <RHFTextField name="email" label="Email Address" />
           <RHFTextField name="coupon" label="Coupon(if Available)" />
 

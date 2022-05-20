@@ -119,7 +119,9 @@ export default function ChatSidebar(props) {
                     {!isCollapse && (
                         <>
                             {/* <ChatAccount /> */}
-                            <Box sx={{ flexGrow: 1 }} > <Typography variant="h6" align="center" sx={{ color: 'text.secondary' }} gutterBottom>Groups</Typography></Box>
+                            <Box sx={{ flexGrow: 1 }} >
+                                 <Typography variant="h6" align="center" sx={{ color: 'text.secondary' }} gutterBottom>Groups</Typography>
+                            </Box>
                         </>
                     )}
 
@@ -143,9 +145,9 @@ export default function ChatSidebar(props) {
                 >
                     <li key={`section-1`}>
                         <ul>
-                            <ListSubheader>{`Own Group`}</ListSubheader>
+                            <ListSubheader>{`Own Groups`}</ListSubheader>
                             {!isLoading ? <ListItem key={`item-${'1'}-${'1'}`}>
-                                <ListItemText primary={`No Gourp`} />
+                                <ListItemText primary={`No Groups`} />
                             </ListItem> :
                                 group.map((section) => (
                                     <ListItem key={`item-${section.id}-${section.id}`} sx={{ cursor: 'pointer' }} onClick={(e) => { View(section.id) }}>
@@ -156,9 +158,9 @@ export default function ChatSidebar(props) {
                     </li>
                     <li key={`section-1`}>
                         <ul>
-                            <ListSubheader>{`Other Group`}</ListSubheader>
+                            <ListSubheader>{`Other Groups`}</ListSubheader>
                             {!isLoading2 ? <ListItem key={`item-${'1'}-${'1'}`}>
-                                <ListItemText primary={`No Gourp`} />
+                                <ListItemText primary={`No Groups`} />
                             </ListItem> :
                                 othergroup.map((section) => (
                                     <ListItem key={`item-${section.id}-${section.id}`} sx={{ cursor: 'pointer' }} onClick={(e) => { View(section.id) }}>

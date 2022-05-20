@@ -20,10 +20,10 @@ export default function Rating() {
         <Page>
             <Container maxWidth={themeStretch ? false : 'lg'}>
                 <HeaderBreadcrumbs
-                    heading="Rating"
+                    heading="Ranking"
                     links={[
                         { name: 'Dashboard', href: PATH_DASHBOARD.root },
-                        { name: 'Rating', href: PATH_DASHBOARD.root },
+                        { name: 'Ranking', href: PATH_DASHBOARD.root },
                     ]}
                 />
 

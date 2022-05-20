@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
 // form
@@ -26,7 +26,9 @@ import { FormProvider, RHFSelect, RHFSwitch, RHFTextField, RHFUploadAvatar } fro
 export default function UserUpdate() {
   const { enqueueSnackbar } = useSnackbar();
   const userID = localStorage.getItem('UserID');
-
+useEffect(()=>{
+  State();
+},[])
 
   const NewUserSchema = Yup.object().shape({
     firstName: Yup.string().required('FirstName is required'),
@@ -92,7 +94,18 @@ export default function UserUpdate() {
     },
     [setValue]
   );
-
+  const [state, setState] = useState([])
+  const [Show2, setShow2] = useState(false)
+  const State = async () => {
+    try {
+      const response = await axios.get(`api/get/states`);
+      const { states } = response.data;
+      setState(states)
+      setShow2(true)
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -138,8 +151,15 @@ export default function UserUpdate() {
             >
               <RHFTextField name="firstName" label="FirstName" />
               <RHFTextField name="lastName" label="LastName" />
-              <RHFTextField name="state" label="State" />
-
+              <RHFSelect name="state" label="State" >
+                <option value='' />
+                {!Show2 ? <option value='' >No State Found</option> :
+                  state.map((option) => (
+                    <option key={option.id} value={option.state}>
+                      {option.state} ({option.code})
+                    </option>
+                  ))}
+              </RHFSelect>
             </Box>
 
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>

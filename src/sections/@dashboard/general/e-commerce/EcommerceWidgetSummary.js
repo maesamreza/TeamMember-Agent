@@ -83,7 +83,7 @@ export default function EcommerceWidgetSummary({ title, percent, total, chartCol
         </Stack> */}
       </Box>
 
-      <ReactApexChart type="line" series={[{ data: chartData }]} options={chartOptions} width={120} height={80} />
+      {/* <ReactApexChart type="line" series={[{ data: chartData }]} options={chartOptions} width={120} height={80} /> */}
     </Card>
   );
 }

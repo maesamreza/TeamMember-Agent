@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
 // form
@@ -63,7 +63,9 @@ export default function AddNewForm() {
         resolver: yupResolver(NewUserSchema),
         defaultValues,
     });
-
+    useEffect(() => {
+        State()
+    }, [])
     const {
         watch,
         handleSubmit,
@@ -72,6 +74,18 @@ export default function AddNewForm() {
     } = methods;
 
     const values = watch();
+    const [state, setState] = useState([])
+    const [Show2, setShow2] = useState(false)
+    const State = async () => {
+        try {
+            const response = await axios.get(`api/get/states`);
+            const { states } = response.data;
+            setState(states)
+            setShow2(true)
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     const onSubmit = async (data) => {
         try {
@@ -163,7 +177,15 @@ export default function AddNewForm() {
                             <RHFTextField name="confirmpassword" label="Confirm Password" type='password' />
                             <RHFTextField name="city" label="City" />
                             {/* <RHFTextField name="country" label="Country" /> */}
-                            <RHFTextField name="state" label="State" />
+                            <RHFSelect name="state" label="State" >
+                                <option value='' />
+                                {!Show2 ? <option value='' >No State Found</option> :
+                                    state.map((option) => (
+                                        <option key={option.id} value={option.state}>
+                                            {option.state} ({option.code})
+                                        </option>
+                                    ))}
+                            </RHFSelect>
                             <RHFTextField name="phone" label="Phone" />
                         </Box>
 

@@ -158,14 +158,14 @@ export default function SalesApproval() {
                 sort: true,
             }
         },
-        {
-            name: "country",
-            label: "Country",
-            options: {
-                filter: true,
-                sort: true,
-            }
-        },
+        // {
+        //     name: "country",
+        //     label: "Country",
+        //     options: {
+        //         filter: true,
+        //         sort: true,
+        //     }
+        // },
         {
             name: "state",
             label: "State",

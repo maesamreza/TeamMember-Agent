@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useParams ,useNavigate} from 'react-router';
 import { useSnackbar } from 'notistack';
 // @mui
-import { Card, Container, Button, Box, Modal } from '@mui/material';
+import { Card, Container, Button, Box, Modal, Typography } from '@mui/material';
 import MUIDataTable from "mui-datatables";
 
 // redux
@@ -12,6 +12,7 @@ import { getConversations, getContacts } from '../../redux/slices/chat';
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
+// import useAuth from '../../hooks/useAuth'
 // components
 import axios from '../../utils/axios';
 import Page from '../../components/Page';
@@ -49,6 +50,8 @@ export default function Group() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const { id } = useParams();
+  const navigate = useNavigate()
+  // const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -88,6 +91,14 @@ export default function Group() {
     enqueueSnackbar(message);
     handleClose2()
   }
+  const ReqGroup = async (value) => {
+    setShowData(false)
+    const response = await axios.get(`api/join/request/groupe/${value}/${ID}`);
+    const { message, groupes } = response.data;
+    setData(groupes)
+    enqueueSnackbar(message);
+    handleClose2()
+  }
   const columns = [
     {
       name: "name",
@@ -106,22 +117,52 @@ export default function Group() {
       }
     },
     {
+      name: "private",
+      label: "",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (value, row) => {
+          console.log(row)
+          return (
+            <>
+              <Typography>
+                {value === 1 ? 'Private' : 'Public'}
+              </Typography>
+            </>
+          );
+        }
+      }
+
+    },
+    {
       name: "id",
       label: "Action",
       options: {
         filter: true,
         sort: true,
         customBodyRender: (value, row) => {
-          // console.log(va)
+          console.log(row)
           return (
             <>
-              <Button
-                variant="contained"
-                startIcon={<Iconify icon={'eva:plus-fill'} />}
-                onClick={(e) => { JoinGroup(value) }}
-              >
-                Join Groups
-              </Button>
+              {
+                row.rowData[2] === 1 ?
+                  <Button
+                    variant="contained"
+                    startIcon={<Iconify icon={'eva:plus-fill'} />}
+                    onClick={(e) => { ReqGroup(value) }}
+                  >
+                    Request
+                  </Button> :
+                  <Button
+                    variant="contained"
+                    startIcon={<Iconify icon={'eva:plus-fill'} />}
+                    onClick={(e) => { JoinGroup(value) }}
+                  >
+                    Join Groups
+                  </Button>
+              }
+
             </>
           );
         }
@@ -137,13 +178,15 @@ export default function Group() {
   };
   const [data, setData] = useState([]);
 
-
+  const Nav = ()=> {
+    navigate('/dashboard/groupreq')
+  }
   return (
-    <Page title="Chat">
+    <Page title="Groups">
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <HeaderBreadcrumbs
-          heading="Chat"
-          links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Chat' }]}
+          heading="Groups"
+          links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Groups' }]}
           action={<>
             <Button
               variant="contained"
@@ -159,6 +202,14 @@ export default function Group() {
               sx={{ ml: 2 }}
             >
               Join New Group
+            </Button>
+            <Button
+              variant="contained"
+              startIcon={<Iconify icon={'eva:plus-fill'} />}
+              onClick={Nav}
+              sx={{ ml: 2 }}
+            >
+              Request
             </Button>
           </>
           }

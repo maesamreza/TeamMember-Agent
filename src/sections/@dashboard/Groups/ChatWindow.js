@@ -427,7 +427,7 @@ export default function ChatWindow() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-        <AddMember />
+          <AddMember />
         </Box>
       </Modal>
 
@@ -438,7 +438,7 @@ export default function ChatWindow() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-         <RemoveMember />
+          <RemoveMember />
         </Box>
       </Modal>
     </Stack >
@@ -448,14 +448,14 @@ export default function ChatWindow() {
 
 const AddMember = () => {
   const { id } = useParams();
-
+  useEffect(() => { Agents() }, [])
   const NewUserSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
+    agentid: Yup.string().required('Name is required'),
   });
 
   const defaultValues = useMemo(
     () => ({
-      name: '',
+      agentid: '',
     }),
 
   );
@@ -478,9 +478,21 @@ const AddMember = () => {
     try {
       const formData = new FormData();
       formData.append("name", data.name)
-      const response = await axios.post(`api/update/groupe/${id}`, formData);
+      const response = await axios.get(`api/join/private/groupe/${id}/${data.agentid}`, formData);
       const { message } = response.data;
-      
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const [agent, setAgent] = useState([])
+  const [Show, setShow] = useState(false)
+  const Agents = async () => {
+    try {
+      const response = await axios.get(`api/get/agents`);
+      const { agents } = response.data;
+      setAgent(agents)
+      setShow(true)
     } catch (error) {
       console.error(error);
     }
@@ -498,7 +510,15 @@ const AddMember = () => {
                 gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
               }} */}
             {/* > */}
-              <RHFTextField name="name" label="Name" />
+            <RHFSelect name="agentid" label="Agent" >
+              <option value='' />
+              {!Show ? <option value='' >No Agent Found</option> :
+                agent.map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.name}
+                  </option>
+                ))}
+            </RHFSelect>
             {/* </Box> */}
 
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>
@@ -565,7 +585,7 @@ const RemoveMember = () => {
                 gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
               }}
             > */}
-              <RHFTextField name="name" label="Name" />
+            <RHFTextField name="name" label="Name" />
             {/* </Box> */}
 
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>

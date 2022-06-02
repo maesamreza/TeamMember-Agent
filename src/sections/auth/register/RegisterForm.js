@@ -57,7 +57,7 @@ export default function RegisterForm() {
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string().required('FirstName is required'),
     lastName: Yup.string().required('LastName is required'),
-    email: Yup.string().required('Email is required').email(),
+    email: Yup.string().required('Email is required').email('@statefarm.com'),
     coupon: Yup.string(),
     state: Yup.string().required('Confirm Password is required'),
     password: Yup.string().required('Password is required'),
@@ -202,7 +202,7 @@ export default function RegisterForm() {
             <option value='' />
             {!Show2 ? <option value='' >No State Found</option> :
               state.map((option) => (
-                <option key={option.id} value={option.state}>
+                <option key={option.id} value={option.id}>
                   {option.state} ({option.code})
                 </option>
               ))}

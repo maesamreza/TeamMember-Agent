@@ -41,6 +41,7 @@ export const PATH_DASHBOARD = {
     group: path(ROOTS_DASHBOARD, '/group'),
     package: path(ROOTS_DASHBOARD, '/packages'),
     rating: path(ROOTS_DASHBOARD, '/rating'),
+    reffer: path(ROOTS_DASHBOARD, '/reffer'),
 
 
 

@@ -101,6 +101,17 @@ export default function GroupReq() {
     enqueueSnackbar(message);
     handleClose2()
   }
+  const ReJGroup = async (value) => {
+    setShowData(false)
+     console.log(value)
+    const GID = value[0]
+    const AID= value[2] 
+    const response = await axios.get(`api/remove/request/${value[2]}/${value[0]}`);
+    const { message, requests } = response.data;
+    GetAllGroups()
+    enqueueSnackbar(message);
+    handleClose2()
+  }
   const columns = [
     {
       name: "agent_id",
@@ -149,7 +160,14 @@ export default function GroupReq() {
                 startIcon={<Iconify icon={'eva:plus-fill'} />}
                 onClick={(e) => { ReqGroup(row.rowData) }}
               >
-                Request
+                Accept
+              </Button>
+              <Button
+                variant="contained"
+                startIcon={<Iconify icon={'eva:plus-fill'} />}
+                onClick={(e) => { ReJGroup(row.rowData) }}
+              >
+                Reject
               </Button>
 
             </>

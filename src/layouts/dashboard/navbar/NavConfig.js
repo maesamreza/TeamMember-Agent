@@ -35,7 +35,7 @@ const navConfig = [
       { title: 'Groups', path: PATH_DASHBOARD.general.group , icon: ICONS.chat },
       { title: 'Ranking', path: PATH_DASHBOARD.general.rating , icon: ICONS.analytics },
       { title: 'License', path: PATH_DASHBOARD.general.license, icon: ICONS.cart },
-      // { title: 'analytics', path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics },
+      { title: 'Refer', path: PATH_DASHBOARD.general.reffer, icon: ICONS.booking },
       // { title: 'banking', path: PATH_DASHBOARD.general.banking, icon: ICONS.banking },
       // { title: 'booking', path: PATH_DASHBOARD.general.booking, icon: ICONS.booking },
     ],

@@ -120,7 +120,7 @@ export default function ChatSidebar(props) {
                         <>
                             {/* <ChatAccount /> */}
                             <Box sx={{ flexGrow: 1 }} >
-                                 <Typography variant="h6" align="center" sx={{ color: 'text.secondary' }} gutterBottom>Groups</Typography>
+                                <Typography variant="h6" align="center" sx={{ color: 'text.secondary' }} gutterBottom>Groups</Typography>
                             </Box>
                         </>
                     )}
@@ -151,7 +151,7 @@ export default function ChatSidebar(props) {
                             </ListItem> :
                                 group.map((section) => (
                                     <ListItem key={`item-${section.id}-${section.id}`} sx={{ cursor: 'pointer' }} onClick={(e) => { View(section.id) }}>
-                                        <ListItemText primary={` ${section.name}`} />
+                                        <ListItemText primary={` ${section.name} ${section.private === 1 ? "(Prt)" : ''}`} />
                                     </ListItem>
                                 ))}
                         </ul>
@@ -164,7 +164,7 @@ export default function ChatSidebar(props) {
                             </ListItem> :
                                 othergroup.map((section) => (
                                     <ListItem key={`item-${section.id}-${section.id}`} sx={{ cursor: 'pointer' }} onClick={(e) => { View(section.id) }}>
-                                        <ListItemText primary={` ${section.name}`} />
+                                        <ListItemText primary={` ${section.name} ${section.private === 1 ? "(Prt)" : ''}`} />
                                     </ListItem>
                                 ))}
                         </ul>

@@ -422,7 +422,7 @@ export default function ChatWindow() {
 
       <Modal
         open={UpdateModal2}
-        onClose={handleUpdateModalClose3}
+        onClose={handleUpdateModalClose2}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >

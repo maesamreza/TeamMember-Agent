@@ -91,10 +91,12 @@ export default function AddNewGroup(props) {
                             <RHFCheckbox name='private' label='private' checked value='1' />
                         </Box>
 
-                        <Stack alignItems="flex-end" sx={{ mt: 3 }}>
+                        <Stack alignItems="flex" sx={{ mt: 3 }}>
                             <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
                                 Create Group
                             </LoadingButton>
+            
+                         
                         </Stack>
                     </Card>
                 </Grid>

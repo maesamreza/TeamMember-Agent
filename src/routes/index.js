@@ -35,7 +35,7 @@ export default function Router() {
           path: 'login',
           element: (
             <GuestGuard>
-              <Login />
+              < Login/>
             </GuestGuard>
           ),
         },
@@ -73,7 +73,8 @@ export default function Router() {
         { path: 'group/:id', element: <Groups /> },
         { path: 'packages', element: <Packages /> },
         { path: 'rating', element: <Rating /> },
-
+        { path: 'reffer', element: <Reffer /> },
+        
         {
           path: 'e-commerce',
           children: [
@@ -149,7 +150,11 @@ export default function Router() {
       path: '/',
       element: <MainLayout />,
       children: [
-        { element: <HomePage />, index: true },
+        { element: (
+          <GuestGuard>
+            < Login/>
+          </GuestGuard>
+        ), index: true },
         { path: 'about-us', element: <About /> },
         { path: 'contact-us', element: <Contact /> },
         { path: 'faqs', element: <Faqs /> },
@@ -176,6 +181,7 @@ const Groups = Loadable(lazy(() => import('../pages/dashboard/Groups')));
 const GroupsReq = Loadable(lazy(() => import('../pages/dashboard/GroupsReq')));
 const Packages = Loadable(lazy(() => import('../pages/dashboard/BuyPackages')));
 const Rating = Loadable(lazy(() => import('../pages/dashboard/Rating')));
+const Reffer = Loadable(lazy(() => import('../pages/dashboard/ReferTable')));
 
 
 

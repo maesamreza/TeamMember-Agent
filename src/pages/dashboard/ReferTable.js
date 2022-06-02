@@ -112,7 +112,7 @@ export default function AddNewSale() {
               <TextField label="Email" value={NLic}  onChange={(e) => { setNLic(e.target.value) }} variant="outlined" />
             </Box>
             <LoadingButton sx={{ mt: 3 }} variant="contained" onClick={(e)=>{BuyPack()}} >
-              Create Package
+              Send
             </LoadingButton>
           </Card>
         </Grid>

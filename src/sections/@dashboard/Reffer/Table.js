@@ -69,8 +69,8 @@ export default function RegisterTab() {
     const GetAllUsableLicnese = async () => {
         setShowData(false)
         const response = await axios.get(`api/refer/accepted/${ID}`);
-        const { message, License } = response.data;
-        setData(License)
+        const { message, proceed } = response.data;
+        setData(proceed)
         enqueueSnackbar(message);
 
        setTimeout(() => {

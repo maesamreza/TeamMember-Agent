@@ -32,7 +32,7 @@ export default function AddNewForm() {
     const NewUserSchema = Yup.object().shape({
         firstName: Yup.string().required('FirstName is required'),
         lastName: Yup.string().required('LastName is required'),
-        email: Yup.string().required('Email is required').email(),
+        email: Yup.string().required('email is required').matches(/(@statefarm.com)/),
         password: Yup.string().required('Password is required'),
         confirmpassword: Yup.string().required('Confirm Password is required'),
         picture: Yup.mixed().test('required', 'Avatar is required', (value) => value !== ''),
@@ -172,7 +172,7 @@ export default function AddNewForm() {
                         >
                             <RHFTextField name="firstName" label="FirstName" />
                             <RHFTextField name="lastName" label="LastName" />
-                            <RHFTextField name="email" label="Email" />
+                            <RHFTextField name="email" label="Email address" helperText="email must match the following: @statefarm.com"/>
                             <RHFTextField name="password" label="Password" type='password' />
                             <RHFTextField name="confirmpassword" label="Confirm Password" type='password' />
                             <RHFTextField name="city" label="City" />

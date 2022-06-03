@@ -79,7 +79,7 @@ export default function AddNewSale() {
               textAlign: 'right'
             }}>
               <LoadingButton variant="contained" sx={{ m: 3 }} onClick={() => { setShowResults(true) }}>
-               Registerd
+               Registered
               </LoadingButton>
 
               <LoadingButton variant="contained" onClick={() => { setShowResults(false) }}>

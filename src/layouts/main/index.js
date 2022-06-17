@@ -16,14 +16,15 @@ export default function MainLayout() {
 
   return (
     <Stack sx={{ minHeight: 1 }}>
-      <MainHeader />
+      {/* <MainHeader /> */}
 
       <Outlet />
 
       <Box sx={{ flexGrow: 1 }} />
 
       {!isHome ? (
-        <MainFooter />
+        // <MainFooter /> 
+        ''
       ) : (
         <Box
           sx={{
@@ -34,12 +35,12 @@ export default function MainLayout() {
           }}
         >
           <Container>
-            <Logo sx={{ mb: 1, mx: 'auto' }} />
+            {/* <Logo sx={{ mb: 1, mx: 'auto' }} /> */}
 
             <Typography variant="caption" component="p">
               © All rights reserved
               <br /> made by &nbsp;
-              <Link href="https://minimals.cc/">minimals.cc</Link>
+              <Link href="https://hnhtechsolutions.com/">HnH Tech Solution</Link>
             </Typography>
           </Container>
         </Box>

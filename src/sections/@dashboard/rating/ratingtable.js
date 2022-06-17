@@ -86,6 +86,7 @@ export default function SalesPacakges() {
     const { enqueueSnackbar } = useSnackbar();
     const [showData, setShowData] = useState(false)
     const [Filter, setFilter] = useState('')
+    const [FilterColumn, setFilterColumn] = useState('')
     const [Search, setSearch] = useState('')
     const ID = localStorage.getItem('UserID')
     useEffect(() => {
@@ -113,9 +114,14 @@ export default function SalesPacakges() {
     const SearchState = (event) => {
         setSearch(event.target.value);
     }
+
+    const FilterByColum = (event) => {
+        setFilterColumn(event.target.value);
+    }
+   
     const FitlerRating = async () => {
         setShowData(false)
-        const response = await axios.get(`api/all/sellers/rating?sort=${Filter}&search=${Search}`);
+        const response = await axios.get(`api/all/sellers/rating?sort=${Filter}&search=${Search}&sortColumn=${FilterColumn}`);
         const { message, Rating } = response.data;
         setData(Rating)
         enqueueSnackbar(message);
@@ -124,7 +130,6 @@ export default function SalesPacakges() {
             setShowData(true)
         }, 1000);
     }
-
 
     const columns = [
         {
@@ -247,6 +252,26 @@ export default function SalesPacakges() {
                             {/* <MenuItem value={'country'}>Country</MenuItem> */}
                             <MenuItem value={'phone'}>Phone</MenuItem>
                             <MenuItem value={'state'}>State</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <FormControl sx={{ m: 1, minWidth: 200 }}>
+                        <InputLabel id="demo-simple-select-label">RankBy</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={FilterColumn}
+                            label="Filter"
+                            onChange={FilterByColum}
+                        >
+                            <MenuItem value={''}>All</MenuItem>
+                            <MenuItem value={'RawNewAutoQuotes'}>Raw New Auto Quotes</MenuItem>
+                            <MenuItem value={'AnnualizedLifePremium'}>Annualized Life Premium</MenuItem>
+                            <MenuItem value={'RawNewAutoWritten'}>Raw New Auto Written</MenuItem>
+                            <MenuItem value={'HealthApplications'}>Health Applications</MenuItem>
+                            <MenuItem value={'TotalFireWritten'}>Total Fire Written</MenuItem>
+                            <MenuItem value={'AnnualizedHealthPremium'}>Annualized Health Premium</MenuItem>
+                            <MenuItem value={'LifeApplications'}>Life Applications</MenuItem>
+                            <MenuItem value={'OtherFinancialServices'}>Other Financial Services</MenuItem>
                         </Select>
                     </FormControl>
                 </Stack>

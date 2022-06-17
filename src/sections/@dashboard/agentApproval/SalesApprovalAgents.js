@@ -183,19 +183,20 @@ export default function SalesApproval() {
                 customBodyRender: (value, row) => {
                     return (
                         <>
-                            {row.rowData[7] === 1 ? 'Approve' : 'Deactive'}
+                            {value === 1 ? 'Approve' : 'Deactive'}
                         </>
                     );
                 }
             },
         },
         {
-            name: "Actions",
+            name: "is_active",
+            label: "Action",
             options: {
                 customBodyRender: (value, row) => {
                     return (
                         <>
-                            {row.rowData[7] === 1 ?
+                            {value === 1 ?
                                 <LoadingButton size="small" variant="contained" style={{ margin: '10px' }} onClick={(e) => { SalePersonDeactivaID(row.rowData[0]) }} >
                                     Deactive
                                 </LoadingButton>
@@ -238,7 +239,7 @@ export default function SalesApproval() {
         },
         {
             name: "RawNewAutoQuotes",
-            label: "RawNewAutoQuotes",
+            label: "Raw New Auto Quotes",
             options: {
                 filter: true,
                 sort: true,
@@ -246,7 +247,7 @@ export default function SalesApproval() {
         },
         {
             name: "RawNewAutoWritten",
-            label: "RawNewAutoWritten",
+            label: "Raw New Auto Written",
             options: {
                 filter: true,
                 sort: true,
@@ -254,7 +255,7 @@ export default function SalesApproval() {
         },
         {
             name: "TotalFireWritten",
-            label: "TotalFireWritten",
+            label: "Total Fire Written",
             options: {
                 filter: true,
                 sort: true,
@@ -262,7 +263,7 @@ export default function SalesApproval() {
         },
         {
             name: "LifeApplications",
-            label: "LifeApplications",
+            label: "Life Applications",
             options: {
                 filter: true,
                 sort: true,
@@ -270,7 +271,7 @@ export default function SalesApproval() {
         },
         {
             name: "AnnualizedLifePremium",
-            label: "AnnualizedLifePremium",
+            label: "Annualized Life Premium",
             options: {
                 filter: true,
                 sort: true,
@@ -278,7 +279,7 @@ export default function SalesApproval() {
         },
         {
             name: "HealthApplications",
-            label: "HealthApplications",
+            label: "Health Applications",
             options: {
                 filter: true,
                 sort: true,
@@ -286,7 +287,7 @@ export default function SalesApproval() {
         },
         {
             name: "AnnualizedHealthPremium",
-            label: "AnnualizedHealthPremium",
+            label: "Annualized Health Premium",
             options: {
                 filter: true,
                 sort: true,
@@ -294,7 +295,7 @@ export default function SalesApproval() {
         },
         {
             name: "OtherFinancialServices",
-            label: "OtherFinancialServices",
+            label: "Other Financial Services",
             options: {
                 filter: true,
                 sort: true,

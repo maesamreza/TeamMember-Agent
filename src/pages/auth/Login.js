@@ -100,7 +100,7 @@ export default function Login() {
               src="https://minimal-assets-api.vercel.app/assets/illustrations/illustration_login.png"
             />
           </SectionStyle>
-        )} */}
+        )}  */}
 
         <Container maxWidth="sm">
           <ContentStyle>
@@ -124,7 +124,7 @@ export default function Login() {
             </Stack>
 
             <LoginForm />
-            {/* 
+            
             {!smUp && (
               <Typography variant="body2" align="center" sx={{ mt: 3 }}>
                 Don’t have an account?{' '}
@@ -132,7 +132,7 @@ export default function Login() {
                   Get started
                 </Link>
               </Typography>
-            )} */}
+            )}
           </ContentStyle>
         </Container>
       </RootStyle>

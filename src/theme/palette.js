@@ -115,14 +115,14 @@ const palette = {
     ...COMMON,
     mode: 'light',
     text: { primary: GREY[900], secondary: GREY[900], disabled: GREY[900] },
-    background: { paper: 'rgba(255,255,255,0.8)', default: 'rgba(255,255,255,0.6)', neutral: GREY[900] },
+    background: { paper: 'rgba(255,255,255,1)', default: 'rgba(255,255,255,1)', neutral: GREY[900] },
     action: { active: GREY[900], ...COMMON.action },
   },
   dark: {
     ...COMMON,
     mode: 'dark',
     text: { primary: '#fff', secondary: GREY[0], disabled: GREY[0] },
-    background: { paper: 'rgba(0,0,0,0.3)', default: 'rgba(0,0,0,0.5)', neutral: GREY[500_16] },
+    background: { paper: 'rgba(0,0,0,1)', default: 'rgba(0,0,0,1)', neutral: GREY[500_16] },
     action: { active: GREY[0], ...COMMON.action },
   },
 };

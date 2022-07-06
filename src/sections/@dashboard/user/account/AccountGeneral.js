@@ -149,13 +149,13 @@ useEffect(()=>{
                 gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
               }}
             >
-              <RHFTextField name="firstName" label="FirstName" />
-              <RHFTextField name="lastName" label="LastName" />
+              <RHFTextField name="firstName" label="First Name" />
+              <RHFTextField name="lastName" label="Last Name" />
               <RHFSelect name="state" label="State" >
                 <option value='' />
                 {!Show2 ? <option value='' >No State Found</option> :
                   state.map((option) => (
-                    <option key={option.id} value={option.state}>
+                    <option key={option.id} value={option.id}>
                       {option.state} ({option.code})
                     </option>
                   ))}
